@@ -6,11 +6,13 @@
     [joodo.middleware.verbose :only (wrap-verbose)]
     [ants.engine.core]))
 
-(defn text [& message]
-  {:status 200 :content-type "text/plain" :body (apply str message)})
+(defn- text [& message]
+  {:status 200 :content-type "text/plain" :body (str "\"" (apply str message) "\"")})
 
-(defn- marshal [value]
-  (with-out-str (prn value)))
+(defn- marshal [status value]
+  {:status status
+   :content-type "text/plain"
+   :body (with-out-str (prn value))})
 
 (defmacro do-cmd [call]
   `(try
@@ -25,7 +27,7 @@
     /join/:name           Join the arena.  Your name must be unique.
     /:id/look             Look around. See what's up.
     /:id/go/:direction    Move either north, east, south, or west"
-    )
+  )
 
 (defroutes api-routes
   (GET "/" [] (text "Welcome to Ant Sparring!" "\n\n" DOC))
