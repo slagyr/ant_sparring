@@ -11,7 +11,7 @@
   (with log @(.log @world))
 
   (it "can create a new world"
-    (should= {:nest {:location [0, 0]}} @stuff)
+    (should= {:nest {:type :nest :id :nest :location [0, 0]}} @stuff)
     (should= {} @commands))
 
   (it "can join the world"
@@ -85,6 +85,11 @@
         (go @world @ant-id "north"))
       (should= 1 (count @commands)))
 
+    (it "can't add command missing ant"
+      (should-throw java.lang.Exception "Invalid ID (missing_id).  It appears you don't exist."
+        (go @world "missing_id" "north"))
+      (should= 0 (count @commands)))
+
     (it "ant can look around"
       (look @world @ant-id)
       (let [command (get @commands @ant-id)]
@@ -134,6 +139,7 @@
       (it "can be retrieved"
         (let [result (stat @world @ant-id)]
           (should= :ant (:type result))
+          (should= @ant-id (:id result))
           (should= "George" (:name result))
           (should= [0 0] (:location result))
           (should= false (:got-food result))

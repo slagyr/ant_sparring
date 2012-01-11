@@ -2,21 +2,23 @@
   (:import
     [java.util.concurrent TimeUnit ScheduledThreadPoolExecutor]))
 
+(def TICK-DURATION 1000)
+
 (deftype World [stuff commands log scheduler])
 
 (defn new-world []
   (World.
-    (ref {:nest {:location [0 0]}})
+    (ref {:nest {:type :nest :id :nest :location [0 0]}})
     (ref {})
     (ref [])
-    (ScheduledThreadPoolExecutor. 1)))
+    (atom nil)))
 
 (def *world* (new-world))
 
 ; COMMAND GENERATION -----------------------------------------------------------------
 
 (defn- gen-id []
-  (int (rand 100000000)))
+  (str (int (rand 100000000))))
 
 (defn- name-taken? [world name]
   (or
@@ -26,6 +28,14 @@
 (defn- check-single-command [world id]
   (when (get @(.commands world) id)
     (throw (Exception. "You're allowed only 1 command per tick"))))
+
+(defn- check-valid-id [world id]
+  (when (not (get @(.stuff world) id))
+    (throw (Exception. (format "Invalid ID (%s).  It appears you don't exist." id)))))
+
+(defn- check-cmd-id [world id]
+  (check-single-command world id)
+  (check-valid-id world id))
 
 (defn join [world name]
   (dosync
@@ -37,13 +47,13 @@
 
 (defn go [world ant direction]
   (dosync
-    (check-single-command world ant)
+    (check-cmd-id world ant)
     (alter (.commands world) assoc ant {:command :go :id ant :direction direction :timestamp (System/nanoTime)})
     ant))
 
 (defn look [world ant]
   (dosync
-    (check-single-command world ant)
+    (check-cmd-id world ant)
     (alter (.commands world) assoc ant {:command :look :id ant :timestamp (System/nanoTime)})
     ant))
 
@@ -69,6 +79,7 @@
       response)))
 
 (defn stat [world ant]
+  (check-valid-id world ant)
   (get @(.stuff world) ant))
 
 ; COMMAND EXECUTION -----------------------------------------------------------------
@@ -78,10 +89,11 @@
    :location [0 0]
    :points 0
    :got-food false
-   :name "Unknown"})
+   :name "Unknown"
+   :id "Unknown"})
 
 (defn- do-join [stuff command]
-  (alter stuff assoc (:id command) (assoc ant-template :name (:name command)))
+  (alter stuff assoc (:id command) (assoc ant-template :name (:name command) :id (:id command)))
   (format "%s has entered the world!" (:name command)))
 
 (defn- new-location [[x y] dir]
@@ -156,8 +168,9 @@
       (locking world (.notifyAll world)))))
 
 (defn start [world]
-  (.scheduleWithFixedDelay (.scheduler world) #(tick world) 0 1000 TimeUnit/MILLISECONDS))
+  (reset! (.scheduler world) (ScheduledThreadPoolExecutor. 1))
+  (.scheduleWithFixedDelay @(.scheduler world) #(tick world) 0 TICK-DURATION TimeUnit/MILLISECONDS))
 
 (defn stop [world]
-  (.shutdown (.scheduler world)))
+  (.shutdown @(.scheduler world)))
 

@@ -62,7 +62,7 @@
       <file leaf-file-name="core.clj" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/engine/src/ants/engine/core.clj">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="132" column="44" selection-start="4132" selection-end="4132" vertical-scroll-proportion="0.0">
+            <state line="171" column="76" selection-start="5323" selection-end="5323" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -71,7 +71,7 @@
       <file leaf-file-name="core_spec.clj" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/engine/spec/ants/engine/core_spec.clj">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="94" column="50" selection-start="2915" selection-end="2915" vertical-scroll-proportion="0.0">
+            <state line="88" column="95" selection-start="2781" selection-end="2781" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -80,7 +80,7 @@
       <file leaf-file-name="core.clj" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/api/src/ants/api/core.clj">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="31" column="41" selection-start="1327" selection-end="1327" vertical-scroll-proportion="0.6672355">
+            <state line="26" column="66" selection-start="850" selection-end="850" vertical-scroll-proportion="0.5971074">
               <folding />
             </state>
           </provider>
@@ -473,7 +473,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1920" height="1174" extended-state="0" />
+    <frame x="0" y="22" width="1440" height="874" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -492,8 +492,8 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="JProfiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1923077" sideWeight="0.5823864" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.41761363" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25862068" sideWeight="0.6785714" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32142857" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -596,23 +596,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar:///System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Classes/classes.jar!/java/util/concurrent/ScheduledThreadPoolExecutor.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="13" selection-start="158" selection-end="158" vertical-scroll-proportion="0.12631579">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/engine/spec/ants/engine/core_spec.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="94" column="50" selection-start="2915" selection-end="2915" vertical-scroll-proportion="0.0">
+        <state line="88" column="95" selection-start="2781" selection-end="2781" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/engine/src/ants/engine/core.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="132" column="44" selection-start="4132" selection-end="4132" vertical-scroll-proportion="0.0">
+        <state line="171" column="76" selection-start="5323" selection-end="5323" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/api/src/ants/api/core.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="41" selection-start="1327" selection-end="1327" vertical-scroll-proportion="0.6672355">
+        <state line="26" column="66" selection-start="850" selection-end="850" vertical-scroll-proportion="0.5971074">
           <folding />
         </state>
       </provider>
