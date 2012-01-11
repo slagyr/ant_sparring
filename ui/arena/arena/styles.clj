@@ -74,7 +74,7 @@
 
 (style "log-entry"
   :width "100%"
-  :horizontal-alignment :center
+  :horizontal-alignment :left
   :font-size 14
   )
 

@@ -37,6 +37,11 @@
   (check-single-command world id)
   (check-valid-id world id))
 
+(def DIRECTIONS #{"north" "east" "west" "south"})
+(defn- check-direction [direction]
+  (when (not (DIRECTIONS direction))
+    (throw (Exception. "You can't go that way silly ant!"))))
+
 (defn join [world name]
   (dosync
     (when (name-taken? world name)
@@ -48,6 +53,7 @@
 (defn go [world ant direction]
   (dosync
     (check-cmd-id world ant)
+    (check-direction direction)
     (alter (.commands world) assoc ant {:command :go :id ant :direction direction :timestamp (System/nanoTime)})
     ant))
 
@@ -108,14 +114,20 @@
     #(and (= :food (:type %)) (= loc (:location %)))
     (vals stuff)))
 
+(defn- nest-at? [stuff loc]
+  (some
+    #(and (= :nest (:type %)) (= loc (:location %)))
+    (vals stuff)))
+
 (defn- award-points [ant points]
   (let [value (or (:points ant) 0)]
     (assoc ant :points (+ points value))))
 
-(defn- award-food [ant found?]
-  (if found?
-    (assoc (award-points ant 1) :got-food true)
-    ant))
+(defn- award-food [ant food? fed?]
+  (cond
+    food? (assoc (award-points ant 1) :got-food true)
+    fed? (assoc (award-points ant 2) :got-food false)
+    :else ant))
 
 (defn- do-go [stuff command]
   (let [ant-id (:id command)
@@ -123,10 +135,15 @@
         dir (:direction command)
         current-loc (:location ant)
         new-loc (new-location current-loc dir)
-        found-food? (and (not (:got-food? ant)) (food-at? @stuff new-loc))
-        ant (award-food (assoc ant :location new-loc) found-food?)]
+        found-food? (and (not (:got-food ant)) (food-at? @stuff new-loc))
+        fed-nest? (and (:got-food ant) (nest-at? @stuff new-loc))
+        ant (award-food (assoc ant :location new-loc) found-food? fed-nest?)]
     (alter stuff assoc ant-id ant)
-    (format "%s went %s%s" (:name ant) dir (if found-food? " and found some FOOD! (1 point)" ""))))
+    (format "%s went %s%s" (:name ant) dir
+      (cond
+        found-food? " and found some FOOD! (1 point)"
+        fed-nest? " and FED HIS NEST! (2 points)"
+        :else ""))))
 
 (defn- do-place-food [stuff command]
   (let [food-id (:id command)
@@ -168,9 +185,12 @@
       (locking world (.notifyAll world)))))
 
 (defn start [world]
-  (reset! (.scheduler world) (ScheduledThreadPoolExecutor. 1))
-  (.scheduleWithFixedDelay @(.scheduler world) #(tick world) 0 TICK-DURATION TimeUnit/MILLISECONDS))
+  (when (nil? @(.scheduler world))
+    (reset! (.scheduler world) (ScheduledThreadPoolExecutor. 1))
+    (.scheduleWithFixedDelay @(.scheduler world) #(tick world) 0 TICK-DURATION TimeUnit/MILLISECONDS)))
 
 (defn stop [world]
-  (.shutdown @(.scheduler world)))
+  (when @(.scheduler world)
+    (.shutdown @(.scheduler world))
+    (reset! (.scheduler world) nil)))
 

@@ -79,6 +79,11 @@
       (should= "George went west" (last @log))
       (should= [-1 0] (:location (get @stuff @ant-id))))
 
+    (it "ant can't go in blah direction"
+      (should-throw java.lang.Exception "You can't go that way silly ant!"
+        (go @world @ant-id "blah"))
+      (should= 0 (count @commands)))
+
     (it "can't add command for existing id"
       (go @world @ant-id "west")
       (should-throw java.lang.Exception "You're allowed only 1 command per tick"
@@ -122,6 +127,19 @@
           (should= true (:got-food ant))
           (should= 1 (:points ant))
           (should= "George went north" (last @log))))
+
+      (it "points for taking food home"
+        (place-food @world [1 0])
+        (tick @world)
+        (go @world @ant-id "east")
+        (tick @world)
+        (go @world @ant-id "west")
+        (tick @world)
+        (let [ant (get @stuff @ant-id)]
+          (should= false (:got-food ant))
+          (should= 3 (:points ant))
+          (should= "George went west and FED HIS NEST! (2 points)" (last @log))))
+
       )
 
     (context "admin feed"
