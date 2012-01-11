@@ -93,7 +93,6 @@
    "antique_white"
    "aqua"
    "aquamarine"
-   "azure"
    "beige"
    "bisque"
    "black"
@@ -129,11 +128,16 @@
 (defn- rand-color []
   (get COLORS (int (rand (count COLORS)))))
 
+(defn- color-for [colors thing]
+  (if-let [color (get @colors (:id thing))]
+    color
+    (let [new-color (rand-color)]
+      (alter colors assoc (:id thing) new-color)
+      new-color)))
+
 (defn- assign-color [colors thing]
-  (if (and (= :ant (:type thing)) (nil? (:color thing)))
-    (let [color (rand-color)]
-      (alter colors assoc (:id thing) color)
-      (assoc thing :color color))
+  (if (= :ant (:type thing))
+    (assoc thing :color (color-for colors thing))
     thing))
 
 (defn- assign-colors [colors stuff]
@@ -175,6 +179,7 @@
       (reset! scheduler nil)
       (curl ds (str @host "/_admin_/stop"))))
   (update [this]
+    (println "@colors: " @colors)
     (let [feed (curl ds (str @host "/_admin_/feed"))
           stuff (build-stuff this (:stuff feed))
           scores (build-scores stuff)

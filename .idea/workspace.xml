@@ -71,7 +71,16 @@
       <file leaf-file-name="core.clj" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ui/src/ants/ui/core.clj">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="46" column="41" selection-start="1381" selection-end="1381" vertical-scroll-proportion="0.64171124">
+            <state line="130" column="31" selection-start="3083" selection-end="3083" vertical-scroll-proportion="0.43850267">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="core.clj" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/src/ants/api/core.clj">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="19" column="158" selection-start="564" selection-end="564" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -131,8 +140,8 @@
         <option value="$PROJECT_DIR$/ui/spec/ants/ui/mocking.clj" />
         <option value="$PROJECT_DIR$/ui/arena/arena/players/arena.clj" />
         <option value="$PROJECT_DIR$/ui/arena/arena/props.clj" />
-        <option value="$PROJECT_DIR$/api/src/ants/api/core.clj" />
         <option value="$PROJECT_DIR$/ui/spec/ants/ui/core_spec.clj" />
+        <option value="$PROJECT_DIR$/api/src/ants/api/core.clj" />
         <option value="$PROJECT_DIR$/ui/src/ants/ui/core.clj" />
       </list>
     </option>
@@ -703,9 +712,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/ui/arena/arena/props.clj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="6" selection-start="654" selection-end="754" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/api/src/ants/api/core.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="90" selection-start="718" selection-end="718" vertical-scroll-proportion="0.19786096">
+        <state line="19" column="158" selection-start="564" selection-end="564" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -717,16 +733,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ui/arena/arena/props.clj">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="6" selection-start="654" selection-end="754" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ui/src/ants/ui/core.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="41" selection-start="1381" selection-end="1381" vertical-scroll-proportion="0.64171124">
+        <state line="130" column="31" selection-start="3083" selection-end="3083" vertical-scroll-proportion="0.43850267">
           <folding />
         </state>
       </provider>
