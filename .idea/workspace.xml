@@ -62,7 +62,16 @@
       <file leaf-file-name="core_spec.clj" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ui/spec/ants/ui/core_spec.clj">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="155" column="29" selection-start="6262" selection-end="6262" vertical-scroll-proportion="0.0">
+            <state line="47" column="47" selection-start="1622" selection-end="1622" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="food.clj" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ui/arena/arena/players/food.clj">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="3" column="16" selection-start="126" selection-end="126" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -71,7 +80,7 @@
       <file leaf-file-name="core.clj" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ui/src/ants/ui/core.clj">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="130" column="31" selection-start="3083" selection-end="3083" vertical-scroll-proportion="0.43850267">
+            <state line="194" column="25" selection-start="5058" selection-end="5058" vertical-scroll-proportion="0.6524064">
               <folding />
             </state>
           </provider>
@@ -80,7 +89,7 @@
       <file leaf-file-name="core.clj" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/src/ants/api/core.clj">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="19" column="158" selection-start="564" selection-end="564" vertical-scroll-proportion="0.0">
+            <state line="19" column="54" selection-start="564" selection-end="564" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -98,7 +107,7 @@
       <file leaf-file-name="props.clj" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ui/arena/arena/props.clj">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="6" selection-start="654" selection-end="754" vertical-scroll-proportion="0.0">
+            <state line="7" column="127" selection-start="586" selection-end="586" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -107,7 +116,7 @@
       <file leaf-file-name="mocking.clj" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ui/spec/ants/ui/mocking.clj">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="16" selection-start="185" selection-end="185" vertical-scroll-proportion="0.0">
+            <state line="32" column="32" selection-start="768" selection-end="768" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -127,7 +136,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/api/spec/ants/api/core_spec.clj" />
         <option value="$PROJECT_DIR$/api/project.clj" />
         <option value="$PROJECT_DIR$/api/config/environment.clj" />
         <option value="$PROJECT_DIR$/engine/spec/ants/engine/core_spec.clj" />
@@ -137,11 +145,12 @@
         <option value="$PROJECT_DIR$/ui/spec/ants/ui/production_spec.clj" />
         <option value="$PROJECT_DIR$/ui/arena/stages.clj" />
         <option value="$PROJECT_DIR$/ui/arena/arena/styles.clj" />
-        <option value="$PROJECT_DIR$/ui/spec/ants/ui/mocking.clj" />
         <option value="$PROJECT_DIR$/ui/arena/arena/players/arena.clj" />
-        <option value="$PROJECT_DIR$/ui/arena/arena/props.clj" />
-        <option value="$PROJECT_DIR$/ui/spec/ants/ui/core_spec.clj" />
         <option value="$PROJECT_DIR$/api/src/ants/api/core.clj" />
+        <option value="$PROJECT_DIR$/ui/arena/arena/props.clj" />
+        <option value="$PROJECT_DIR$/ui/spec/ants/ui/mocking.clj" />
+        <option value="$PROJECT_DIR$/ui/arena/arena/players/food.clj" />
+        <option value="$PROJECT_DIR$/ui/spec/ants/ui/core_spec.clj" />
         <option value="$PROJECT_DIR$/ui/src/ants/ui/core.clj" />
       </list>
     </option>
@@ -638,11 +647,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/api/config/environment.clj">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="30" selection-start="67" selection-end="67" vertical-scroll-proportion="0.057840616" />
-      </provider>
-    </entry>
     <entry file="jar:///System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Classes/classes.jar!/java/util/concurrent/ScheduledThreadPoolExecutor.class">
       <provider selected="true" editor-type-id="text-editor">
         <state line="5" column="13" selection-start="158" selection-end="158" vertical-scroll-proportion="0.12631579" />
@@ -705,37 +709,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ui/spec/ants/ui/mocking.clj">
+    <entry file="file://$PROJECT_DIR$/ui/arena/arena/props.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="16" selection-start="185" selection-end="185" vertical-scroll-proportion="0.0">
+        <state line="7" column="127" selection-start="586" selection-end="586" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ui/arena/arena/props.clj">
+    <entry file="file://$PROJECT_DIR$/ui/spec/ants/ui/mocking.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="6" selection-start="654" selection-end="754" vertical-scroll-proportion="0.0">
+        <state line="32" column="32" selection-start="768" selection-end="768" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ui/arena/arena/players/food.clj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="16" selection-start="126" selection-end="126" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/api/src/ants/api/core.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="158" selection-start="564" selection-end="564" vertical-scroll-proportion="0.0">
+        <state line="19" column="54" selection-start="564" selection-end="564" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ui/spec/ants/ui/core_spec.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="155" column="29" selection-start="6262" selection-end="6262" vertical-scroll-proportion="0.0">
+        <state line="47" column="47" selection-start="1622" selection-end="1622" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ui/src/ants/ui/core.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="130" column="31" selection-start="3083" selection-end="3083" vertical-scroll-proportion="0.43850267">
+        <state line="194" column="25" selection-start="5058" selection-end="5058" vertical-scroll-proportion="0.6524064">
           <folding />
         </state>
       </provider>

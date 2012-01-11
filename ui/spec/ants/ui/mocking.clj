@@ -24,7 +24,13 @@
   (shutdown [this]
     (reset! call "shutdown"))
   (update [this]
-    (reset! call "update")))
+    (reset! call "update"))
+  (place-food [this x y]
+    (reset! call "place-food")
+    (reset! params {:x x :y y}))
+  (remove-food [this x y]
+    (reset! call "remove-food")
+    (reset! params {:x x :y y})))
 
 (defn new-mock-interactor []
   (MockInteractor. (atom nil) (atom nil)))

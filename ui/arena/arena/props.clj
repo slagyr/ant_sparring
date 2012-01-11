@@ -5,7 +5,7 @@
  [:stop-button {:id "stop-button" :players "button" :text "Stop" :on-mouse-clicked (fn [e] (.shutdown (backstage-get (production e) "interactor")))}]]
 [:displays
  [:world-buffer
-  [:world {:id "world"}
+  [:world {:id "world" :on-mouse-clicked (fn [e] (.place-food (backstage-get (production e) "interactor") (.getX e) (.getY e)))}
 ;    [:ant {:x 120 :y 120 :text "Micah"}]
 ;    [:nest {:x 270 :y 270}]
 ;    [:food {:x 400 :y 400}]

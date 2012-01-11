@@ -85,7 +85,9 @@
 (defprotocol AntsInteractor
   (startup [this host])
   (shutdown [this])
-  (update [this]))
+  (update [this])
+  (place-food [this x y])
+  (remove-food [this x y]))
 
 
 (def COLORS
@@ -166,6 +168,9 @@
       (ref-set (.log interactor) result)
       result)))
 
+(defn- untranslate-location [[x y]]
+  [(- (quot x 60) 5) (- (quot y 60) 5)])
+
 (deftype RealAntsInteractor [ui ds host scheduler colors log]
   AntsInteractor
   (startup [this host]
@@ -179,12 +184,17 @@
       (reset! scheduler nil)
       (curl ds (str @host "/_admin_/stop"))))
   (update [this]
-    (println "@colors: " @colors)
     (let [feed (curl ds (str @host "/_admin_/feed"))
           stuff (build-stuff this (:stuff feed))
           scores (build-scores stuff)
           log (build-log this (:log feed))]
-      (update-ui ui {:stuff stuff :scores scores :log log}))))
+      (update-ui ui {:stuff stuff :scores scores :log log})))
+  (place-food [this x y]
+    (let [[x y] (untranslate-location [x y])]
+      (curl ds (format "%s/_admin_/place-food/%s/%s" @host x y))))
+  (remove-food [this x y]
+    (let [[x y] (untranslate-location [x y])]
+      (curl ds (format "%s/_admin_/remove-food/%s/%s" @host x y)))))
 
 
 (defn new-ants-interactor [ui ds]

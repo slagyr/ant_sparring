@@ -37,6 +37,16 @@
       (should= "http://somewhere/_admin_/stop" (last @(.urls @ds)))
       (should= nil @(.scheduler @interactor)))
 
+    (it "will place food"
+      (startup @interactor "http://somewhere")
+      (place-food @interactor 305 305)
+      (should= "http://somewhere/_admin_/place-food/0/0" (last @(.urls @ds))))
+
+    (it "will remove food"
+      (startup @interactor "http://somewhere")
+      (remove-food @interactor 305 305)
+      (should= "http://somewhere/_admin_/remove-food/0/0" (last @(.urls @ds))))
+
     (context "update"
 
       (before (reset! (.host @interactor) "http://host"))
@@ -90,72 +100,80 @@
   (context "Limelight UI"
     (with-limelight :production "arena" :scene "arena" :stage "arena")
 
-    (context "with interactor"
-      (with interactor (new-mock-interactor))
-      (before (backstage-put @production "interactor" @interactor))
+    (with interactor (new-mock-interactor))
+    (with ui (new-ants-ui @production))
+    (before (backstage-put @production "interactor" @interactor))
+    (before @scene)
 
-      (it "start-button starts the interactor"
-        (text= (find-by-id @scene "host") "http://here")
-        (Mouse/click (find-by-id @scene "start-button"))
-        (should= "startup" @(.call @interactor))
-        (should= "http://here" (:host @(.params @interactor))))
+    (it "start-button starts the interactor"
+      (text= (find-by-id @scene "host") "http://here")
+      (Mouse/click (find-by-id @scene "start-button"))
+      (should= "startup" @(.call @interactor))
+      (should= "http://here" (:host @(.params @interactor))))
 
-      (it "stop-button stops the interactor"
-        (Mouse/click (find-by-id @scene "stop-button"))
-        (should= "shutdown" @(.call @interactor)))
-      )
+    (it "stop-button stops the interactor"
+      (Mouse/click (find-by-id @scene "stop-button"))
+      (should= "shutdown" @(.call @interactor)))
 
-    (context "with ui"
-      (with ui (new-ants-ui @production))
-      (before @scene)
+    (it "places food"
+      (Mouse/click (find-by-id @scene "world") 5 5)
+      (should= "place-food" @(.call @interactor))
+      (should= 5 (:x @(.params @interactor)))
+      (should= 5 (:y @(.params @interactor))))
 
-      (it "populates nest"
-        (update-ui @ui {:stuff [{:type :nest :location [0, 0]}]})
-        (let [nests (find-by-name @scene "nest")
-              nest (first nests)]
-          (should= 1 (count nests))
-          (let [style (.getStyle (.getPeer nest))]
-            (should= "300" (.getX style))
-            (should= "300" (.getY style)))))
+    (it "remove food"
+      (update-ui @ui {:stuff [{:type :food :location [-1, -1]}]})
+      (Mouse/click (first (find-by-name @scene "food")) 5 5)
+      (should= "remove-food" @(.call @interactor))
+      (should= 245 (:x @(.params @interactor)))
+      (should= 245 (:y @(.params @interactor))))
 
-      (it "populates food"
-        (update-ui @ui {:stuff [{:type :food :location [-1, -1]}]})
-        (let [foods (find-by-name @scene "food")
-              food (first foods)]
-          (should= 1 (count foods))
-          (let [style (.getStyle (.getPeer food))]
-            (should= "240" (.getX style))
-            (should= "240" (.getY style)))))
+    (it "populates nest"
+      (update-ui @ui {:stuff [{:type :nest :location [0, 0]}]})
+      (let [nests (find-by-name @scene "nest")
+            nest (first nests)]
+        (should= 1 (count nests))
+        (let [style (.getStyle (.getPeer nest))]
+          (should= "300" (.getX style))
+          (should= "300" (.getY style)))))
 
-      (it "populates ant"
-        (update-ui @ui {:stuff [{:type :ant :location [1, 1] :name "George" :color "black"}]})
-        (let [ants (find-by-name @scene "ant")
-              ant (first ants)]
-          (should= 1 (count ants))
-          (let [style (.getStyle (.getPeer ant))]
-            (should= "360" (.getX style))
-            (should= "360" (.getY style))
-            (should= "#000000ff" (.getBackgroundColor style)))))
+    (it "populates food"
+      (update-ui @ui {:stuff [{:type :food :location [-1, -1]}]})
+      (let [foods (find-by-name @scene "food")
+            food (first foods)]
+        (should= 1 (count foods))
+        (let [style (.getStyle (.getPeer food))]
+          (should= "240" (.getX style))
+          (should= "240" (.getY style)))))
 
-      (it "populates scores"
-        (update-ui @ui {:scores [{:name "joe" :points 9 :color "red"}{:name "bill" :points 8 :color "green"}]})
-        (let [scores (children (find-by-id @scene "scores"))]
-          (should= 2 (count scores))
-          (should= "#ff0000ff" (.getBackgroundColor (.getStyle (.getPeer (first scores)))))
-          (should= "joe" (text (first (find-by-name (first scores) "score-name"))))
-          (should= "9" (text (first (find-by-name (first scores) "score-value"))))
-          (should= "#00ff00ff" (.getBackgroundColor (.getStyle (.getPeer (second scores)))))
-          (should= "bill" (text (first (find-by-name (second scores) "score-name"))))
-          (should= "8" (text (first (find-by-name (second scores) "score-value"))))))
+    (it "populates ant"
+      (update-ui @ui {:stuff [{:type :ant :location [1, 1] :name "George" :color "black"}]})
+      (let [ants (find-by-name @scene "ant")
+            ant (first ants)]
+        (should= 1 (count ants))
+        (let [style (.getStyle (.getPeer ant))]
+          (should= "360" (.getX style))
+          (should= "360" (.getY style))
+          (should= "#000000ff" (.getBackgroundColor style)))))
 
-      (it "populates log"
-        (update-ui @ui {:log ["message 1" "message 2"]})
-        (let [entries (children (find-by-id @scene "log"))]
-          (should= 2 (count entries))
-          (should= "message 1" (text (first entries)))
-          (should= "message 2" (text (second entries)))))
+    (it "populates scores"
+      (update-ui @ui {:scores [{:name "joe" :points 9 :color "red"} {:name "bill" :points 8 :color "green"}]})
+      (let [scores (children (find-by-id @scene "scores"))]
+        (should= 2 (count scores))
+        (should= "#ff0000ff" (.getBackgroundColor (.getStyle (.getPeer (first scores)))))
+        (should= "joe" (text (first (find-by-name (first scores) "score-name"))))
+        (should= "9" (text (first (find-by-name (first scores) "score-value"))))
+        (should= "#00ff00ff" (.getBackgroundColor (.getStyle (.getPeer (second scores)))))
+        (should= "bill" (text (first (find-by-name (second scores) "score-name"))))
+        (should= "8" (text (first (find-by-name (second scores) "score-value"))))))
 
-      )
+    (it "populates log"
+      (update-ui @ui {:log ["message 1" "message 2"]})
+      (let [entries (children (find-by-id @scene "log"))]
+        (should= 2 (count entries))
+        (should= "message 1" (text (first entries)))
+        (should= "message 2" (text (second entries)))))
+
     )
   )
 
