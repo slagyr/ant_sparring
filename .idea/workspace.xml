@@ -68,19 +68,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="core_spec.clj" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="core_spec.clj" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/engine/spec/ants/engine/core_spec.clj">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="75" column="53" selection-start="2307" selection-end="2307" vertical-scroll-proportion="0.0">
+            <state line="107" column="51" selection-start="3490" selection-end="3490" vertical-scroll-proportion="1.2311436">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="core.clj" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="core.clj" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/engine/src/ants/engine/core.clj">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="51" column="87" selection-start="1473" selection-end="1473" vertical-scroll-proportion="0.75">
+            <state line="87" column="99" selection-start="2944" selection-end="2944" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -101,8 +101,8 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/engine/project.clj" />
-        <option value="$PROJECT_DIR$/engine/spec/ants/engine/core_spec.clj" />
         <option value="$PROJECT_DIR$/engine/src/ants/engine/core.clj" />
+        <option value="$PROJECT_DIR$/engine/spec/ants/engine/core_spec.clj" />
       </list>
     </option>
   </component>
@@ -394,7 +394,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="2560" height="1414" extended-state="0" />
+    <frame x="0" y="22" width="1440" height="874" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -412,8 +412,8 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="JProfiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19904459" sideWeight="0.6705247" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3294753" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25862068" sideWeight="0.58201057" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.41798943" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -475,16 +475,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/engine/spec/ants/engine/core_spec.clj">
+    <entry file="file://$PROJECT_DIR$/engine/src/ants/engine/core.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="75" column="53" selection-start="2307" selection-end="2307" vertical-scroll-proportion="0.0">
+        <state line="87" column="99" selection-start="2944" selection-end="2944" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/engine/src/ants/engine/core.clj">
+    <entry file="file://$PROJECT_DIR$/engine/spec/ants/engine/core_spec.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="87" selection-start="1473" selection-end="1473" vertical-scroll-proportion="0.75">
+        <state line="107" column="51" selection-start="3490" selection-end="3490" vertical-scroll-proportion="1.2311436">
           <folding />
         </state>
       </provider>
