@@ -4,22 +4,35 @@
     [compojure.route :only (not-found)]
     [joodo.env :only (development-env?)]
     [joodo.middleware.verbose :only (wrap-verbose)]
-;    [joodo.middleware.view-context :only (wrap-view-context)]
-;    [joodo.views :only (render-template render-html)]
-;    [joodo.controllers :only (controller-router)]
-    ))
+    [ants.engine.core]))
+
+(defn text [message]
+  {:status 200 :content-type "text/plain" :body message})
+
+(defn- marshal [value]
+  (with-out-str (prn value)))
+
+(defmacro do-cmd [call]
+  `(try
+     (let [id# ~call]
+       (locking *world* (.wait *world* 1000))
+       (marshal (stat *world* id)))
+     (catch Exception ~'e
+       (marshal {:response "error" :message (.getMessage ~'e)}))))
 
 (defroutes api-routes
-  (GET "/" [] {:status 200 :content-type "text/plain" :body "Welcome to Ant Sparring!"})
-;  (controller-router 'ants.api.controller)
+  (GET "/" [] (text "Welcome to Ant Sparring!"))
+  (GET "/_admin_/start" [] (do (start *world*) (text "The world has started")))
+  (GET "/_admin_/stop" [] (do (stop *world*) (text "The world has stopped")))
+  (GET "/_admin_/feed" [] (marshal (get-feed *world*)))
+  (GET "/_admin_/place-food/:x/:y" {{x :x y :y} :params} (marshal (place-food *world* [(Integer/parseInt x) (Integer/parseInt y)])))
+  (GET "/_admin_/remove-food/:x/:y" {{x :x y :y} :params} (marshal (remove-food *world* [(Integer/parseInt x) (Integer/parseInt y)])))
+  (GET "/join/:name" {{name :name} :params} (do-cmd (join *world* name)))
+;  (GET "/:id/look" {{id :id} :params} (do-cmd (look *world* id)))
+;  (GET "/:id/go/:direction" {{id :id dir :direction} :params} (do-cmd (go *world* id dir)))
   (not-found "Are you lost little ant?"))
 
 (def joodo-handler
   (if (development-env?)
     (wrap-verbose api-routes)
     api-routes))
-
-;(def app-handler
-;  (->
-;    api-routes
-;    (wrap-view-context :template-root "ants/api/view" :ns `ants.api.view.view-helpers)))

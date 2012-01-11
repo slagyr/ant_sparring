@@ -8,6 +8,7 @@
   (with world (new-world))
   (with stuff @(.stuff @world))
   (with commands @(.commands @world))
+  (with log @(.log @world))
 
   (it "can create a new world"
     (should= {:nest {:location [0, 0]}} @stuff)
@@ -34,11 +35,12 @@
           results (tick @world)]
       (should= {} @commands)
       (should= 2 (count @stuff))
-      (should= ["Phil has entered the world!"] results)
+      (should= "Phil has entered the world!" (last @log))
       (let [ant (get @stuff id)]
         (should= :ant (:type ant))
         (should= "Phil" (:name ant))
         (should= [0 0] (:location ant)))))
+
 
   (context "with one ant"
 
@@ -55,26 +57,26 @@
 
     (it "ant can go north"
       (go @world @ant-id "north")
-      (let [results (tick @world)]
-        (should= ["George went north"] results))
+      (tick @world)
+      (should= "George went north" (last @log))
       (should= [0 -1] (:location (get @stuff @ant-id))))
 
     (it "ant can go south"
       (go @world @ant-id "south")
-      (let [results (tick @world)]
-        (should= ["George went south"] results))
+      (tick @world)
+      (should= "George went south" (last @log))
       (should= [0 1] (:location (get @stuff @ant-id))))
 
     (it "ant can go east"
       (go @world @ant-id "east")
-      (let [results (tick @world)]
-        (should= ["George went east"] results))
+      (tick @world)
+      (should= "George went east" (last @log))
       (should= [1 0] (:location (get @stuff @ant-id))))
 
     (it "ant can go west"
       (go @world @ant-id "west")
-      (let [results (tick @world)]
-        (should= ["George went west"] results))
+      (tick @world)
+      (should= "George went west" (last @log))
       (should= [-1 0] (:location (get @stuff @ant-id))))
 
     (it "can't add command for existing id"
@@ -82,6 +84,15 @@
       (should-throw java.lang.Exception "You're allowed only 1 command per tick"
         (go @world @ant-id "north"))
       (should= 1 (count @commands)))
+
+    (it "ant can look around"
+      (look @world @ant-id)
+      (let [command (get @commands @ant-id)]
+        (should-not= nil command)
+        (should= :look (:command command))
+        (should= @ant-id (:id command)))
+      (tick @world)
+      (should= "George looks around" (last @log)))
 
     (context "finding food"
       (it "gets stored and award points"
@@ -92,7 +103,7 @@
               ant (get @stuff @ant-id)]
           (should= true (:got-food ant))
           (should= 1 (:points ant))
-          (should= ["George went east and found some FOOD! (1 point)"] results)))
+          (should= "George went east and found some FOOD! (1 point)" (last @log))))
 
       (it "does nothing if it's already got food"
         (place-food @world [1 0])
@@ -105,7 +116,29 @@
               ant (get @stuff @ant-id)]
           (should= true (:got-food ant))
           (should= 1 (:points ant))
-          (should= ["George went north"] results)))
+          (should= "George went north" (last @log))))
+      )
+
+    (context "admin feed"
+
+      (it "is provided"
+        (let [old-log @(.log @world)
+              result (get-feed @world)]
+          (should= @stuff (:stuff result))
+          (should= old-log (:log result))
+          (should= [] @(.log @world))))
+      )
+
+    (context "stat"
+
+      (it "can be retrieved"
+        (let [result (stat @world @ant-id)]
+          (should= :ant (:type result))
+          (should= "George" (:name result))
+          (should= [0 0] (:location result))
+          (should= false (:got-food result))
+          (should= 0 (:points result))))
+
       )
     )
 
@@ -122,12 +155,12 @@
 
     (it "will appear"
       (let [food-id (place-food @world [5 5])
-            results (tick @world)
+            _ (tick @world)
             food (get @stuff food-id)]
         (should= :food (:type food))
         (should= [5 5] (:location food))
         (should= food-id (:id food))
-        (should= ["New food appeared at (5, 5)"] results)))
+        (should= "New food appeared at (5, 5)" (last @log))))
 
     (it "can be removed"
       (let [id (place-food @world [5 5])
@@ -140,6 +173,15 @@
         (should= [5 5] (:location command))
         (should= id (:id command))
         (should-not= nil (:timestamp command))))
+
+    (it "will disappear"
+      (let [food-id (place-food @world [5 5])
+            _ (tick @world)
+            remove-id (remove-food @world [5 5])
+            _ (tick @world)
+            food (get @stuff food-id)]
+        (should= nil food)
+        (should= "The food at (5, 5) has disappeared" (last @log))))
     )
   )
 

@@ -59,73 +59,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="project.clj" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/engine/project.clj">
+      <file leaf-file-name="core.clj" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/engine/src/ants/engine/core.clj">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="20" selection-start="181" selection-end="181" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="core.clj" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/api/src/ants/api/core.clj">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="41" selection-start="575" selection-end="575" vertical-scroll-proportion="0.43933055">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Procfile" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/api/Procfile">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="view_helpers.clj" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/api/src/ants/api/view/view_helpers.clj">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="9" selection-start="9" selection-end="9" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="core_spec.clj" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/api/spec/ants/api/core_spec.clj">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="23" selection-start="177" selection-end="177" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="project.clj" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/api/project.clj">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="27" selection-start="378" selection-end="378" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="environment.clj" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/api/config/environment.clj">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="30" selection-start="67" selection-end="67" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="development.clj" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/api/config/development.clj">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <state line="132" column="44" selection-start="4132" selection-end="4132" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -134,16 +71,16 @@
       <file leaf-file-name="core_spec.clj" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/engine/spec/ants/engine/core_spec.clj">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="141" column="48" selection-start="4591" selection-end="4591" vertical-scroll-proportion="0.0">
+            <state line="94" column="50" selection-start="2915" selection-end="2915" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="core.clj" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/engine/src/ants/engine/core.clj">
+      <file leaf-file-name="core.clj" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/api/src/ants/api/core.clj">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="87" column="99" selection-start="2944" selection-end="2944" vertical-scroll-proportion="0.0">
+            <state line="31" column="41" selection-start="1327" selection-end="1327" vertical-scroll-proportion="0.6672355">
               <folding />
             </state>
           </provider>
@@ -163,13 +100,13 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/engine/src/ants/engine/core.clj" />
-        <option value="$PROJECT_DIR$/engine/spec/ants/engine/core_spec.clj" />
         <option value="$PROJECT_DIR$/engine/project.clj" />
         <option value="$PROJECT_DIR$/api/src/ants/api/view/view_helpers.clj" />
         <option value="$PROJECT_DIR$/api/spec/ants/api/core_spec.clj" />
         <option value="$PROJECT_DIR$/api/project.clj" />
         <option value="$PROJECT_DIR$/api/config/environment.clj" />
+        <option value="$PROJECT_DIR$/engine/spec/ants/engine/core_spec.clj" />
+        <option value="$PROJECT_DIR$/engine/src/ants/engine/core.clj" />
         <option value="$PROJECT_DIR$/api/src/ants/api/core.clj" />
       </list>
     </option>
@@ -330,18 +267,19 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="project.structure.last.edited" value="Modules" />
     <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="recentsLimit" value="5" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="GoToClass.includeJavaFiles" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="recentsLimit" value="5" />
-    <property name="MemberChooser.sorted" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
-    <property name="project.structure.side.proportion" value="0.2" />
     <property name="GoToClass.includeLibraries" value="false" />
     <property name="dynamic.classpath" value="false" />
-    <property name="MemberChooser.copyJavadoc" value="false" />
   </component>
   <component name="RunManager" selected="Application.api specs - vigilent">
     <configuration default="false" name="core_spec" type="ClojureScriptRunConfiguration" factoryName="Clojure Script" temporary="true">
@@ -535,13 +473,13 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1440" height="874" extended-state="0" />
+    <frame x="0" y="22" width="1920" height="1174" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32936507" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23579545" sideWeight="0.9967949" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -554,8 +492,8 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="JProfiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25862068" sideWeight="0.6706349" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41798943" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1923077" sideWeight="0.5823864" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.41761363" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -625,7 +563,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/api/spec/ants/api/core_spec.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="23" selection-start="177" selection-end="177" vertical-scroll-proportion="0.0">
+        <state line="9" column="23" selection-start="177" selection-end="177" vertical-scroll-proportion="0.17352185">
           <folding />
         </state>
       </provider>
@@ -646,35 +584,35 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/api/project.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="27" selection-start="378" selection-end="378" vertical-scroll-proportion="0.0">
+        <state line="9" column="27" selection-start="378" selection-end="378" vertical-scroll-proportion="0.17352185">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/api/config/environment.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="30" selection-start="67" selection-end="67" vertical-scroll-proportion="0.0">
+        <state line="3" column="30" selection-start="67" selection-end="67" vertical-scroll-proportion="0.057840616">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/engine/spec/ants/engine/core_spec.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="141" column="48" selection-start="4591" selection-end="4591" vertical-scroll-proportion="0.0">
+        <state line="94" column="50" selection-start="2915" selection-end="2915" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/engine/src/ants/engine/core.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="87" column="99" selection-start="2944" selection-end="2944" vertical-scroll-proportion="0.0">
+        <state line="132" column="44" selection-start="4132" selection-end="4132" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/api/src/ants/api/core.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="41" selection-start="575" selection-end="575" vertical-scroll-proportion="0.43933055">
+        <state line="31" column="41" selection-start="1327" selection-end="1327" vertical-scroll-proportion="0.6672355">
           <folding />
         </state>
       </provider>

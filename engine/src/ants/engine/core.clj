@@ -1,11 +1,17 @@
-(ns ants.engine.core)
+(ns ants.engine.core
+  (:import
+    [java.util.concurrent TimeUnit ScheduledThreadPoolExecutor]))
 
-(deftype World [stuff commands])
+(deftype World [stuff commands log scheduler])
 
 (defn new-world []
   (World.
     (ref {:nest {:location [0 0]}})
-    (ref {})))
+    (ref {})
+    (ref [])
+    (ScheduledThreadPoolExecutor. 1)))
+
+(def *world* (new-world))
 
 ; COMMAND GENERATION -----------------------------------------------------------------
 
@@ -32,7 +38,14 @@
 (defn go [world ant direction]
   (dosync
     (check-single-command world ant)
-    (alter (.commands world) assoc ant {:command :go :id ant :direction direction :timestamp (System/nanoTime)})))
+    (alter (.commands world) assoc ant {:command :go :id ant :direction direction :timestamp (System/nanoTime)})
+    ant))
+
+(defn look [world ant]
+  (dosync
+    (check-single-command world ant)
+    (alter (.commands world) assoc ant {:command :look :id ant :timestamp (System/nanoTime)})
+    ant))
 
 (defn place-food [world location]
   (dosync
@@ -49,10 +62,26 @@
         (:id food))
       (throw (Exception. (str "No food found at " location))))))
 
+(defn get-feed [world]
+  (dosync
+    (let [response {:stuff @(.stuff world) :log @(.log world)}]
+      (ref-set (.log world) [])
+      response)))
+
+(defn stat [world ant]
+  (get @(.stuff world) ant))
+
 ; COMMAND EXECUTION -----------------------------------------------------------------
 
+(def ant-template
+  {:type :ant
+   :location [0 0]
+   :points 0
+   :got-food false
+   :name "Unknown"})
+
 (defn- do-join [stuff command]
-  (alter stuff assoc (:id command) {:type :ant :name (:name command) :location [0 0]})
+  (alter stuff assoc (:id command) (assoc ant-template :name (:name command)))
   (format "%s has entered the world!" (:name command)))
 
 (defn- new-location [[x y] dir]
@@ -93,11 +122,23 @@
     (alter stuff assoc food-id {:type :food :location [x y] :id food-id})
     (format "New food appeared at (%s, %s)" x y)))
 
+(defn- do-remove-food [stuff command]
+  (let [food-id (:id command)
+        [x y] (:location command)]
+    (alter stuff dissoc food-id)
+    (format "The food at (%s, %s) has disappeared" x y)))
+
+(defn- do-look [stuff command]
+  (let [ant (get @stuff (:id command))]
+    (format "%s looks around" (:name ant))))
+
 (def command-map
   {
     :join do-join
     :go do-go
     :place-food do-place-food
+    :remove-food do-remove-food
+    :look do-look
     })
 
 (defn execute-command [stuff command]
@@ -109,7 +150,14 @@
 (defn tick [world]
   (dosync
     (let [sorted-commands (sort #(.compareTo (:timestamp %1) (:timestamp %2)) (vals @(.commands world)))
-          results (map #(execute-command (.stuff world) %) sorted-commands)]
+          results (doall (map #(execute-command (.stuff world) %) sorted-commands))]
+      (alter (.log world) concat results)
       (ref-set (.commands world) {})
-      (doall results))))
+      (locking world (.notifyAll world)))))
+
+(defn start [world]
+  (.scheduleWithFixedDelay (.scheduler world) #(tick world) 0 1000 TimeUnit/MILLISECONDS))
+
+(defn stop [world]
+  (.shutdown (.scheduler world)))
 
