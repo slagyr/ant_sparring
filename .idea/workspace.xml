@@ -59,46 +59,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="core.clj" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/engine/src/ants/engine/core.clj">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="20" selection-start="20" selection-end="96" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="core_spec.clj" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/engine/spec/ants/engine/core_spec.clj">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="88" column="95" selection-start="2781" selection-end="2781" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="core.clj" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/api/src/ants/api/core.clj">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="19" column="54" selection-start="564" selection-end="564" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="project.clj" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ui/project.clj">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="21" selection-start="268" selection-end="268" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="core_spec.clj" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ui/spec/ants/ui/core_spec.clj">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="81" column="52" selection-start="3158" selection-end="3158" vertical-scroll-proportion="0.0">
+            <state line="155" column="29" selection-start="6262" selection-end="6262" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -107,7 +71,25 @@
       <file leaf-file-name="core.clj" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ui/src/ants/ui/core.clj">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="94" column="68" selection-start="2007" selection-end="2007" vertical-scroll-proportion="0.35714287">
+            <state line="46" column="41" selection-start="1381" selection-end="1381" vertical-scroll-proportion="0.64171124">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="arena.clj" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ui/arena/arena/players/arena.clj">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="props.clj" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ui/arena/arena/props.clj">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="15" column="6" selection-start="654" selection-end="754" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -116,7 +98,7 @@
       <file leaf-file-name="mocking.clj" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ui/spec/ants/ui/mocking.clj">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="38" selection-start="350" selection-end="350" vertical-scroll-proportion="0.0">
+            <state line="9" column="16" selection-start="185" selection-end="185" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -136,16 +118,20 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/engine/project.clj" />
-        <option value="$PROJECT_DIR$/api/src/ants/api/view/view_helpers.clj" />
         <option value="$PROJECT_DIR$/api/spec/ants/api/core_spec.clj" />
         <option value="$PROJECT_DIR$/api/project.clj" />
         <option value="$PROJECT_DIR$/api/config/environment.clj" />
         <option value="$PROJECT_DIR$/engine/spec/ants/engine/core_spec.clj" />
         <option value="$PROJECT_DIR$/engine/src/ants/engine/core.clj" />
         <option value="$PROJECT_DIR$/ui/project.clj" />
-        <option value="$PROJECT_DIR$/api/src/ants/api/core.clj" />
+        <option value="$PROJECT_DIR$/ui/arena/production.clj" />
+        <option value="$PROJECT_DIR$/ui/spec/ants/ui/production_spec.clj" />
+        <option value="$PROJECT_DIR$/ui/arena/stages.clj" />
+        <option value="$PROJECT_DIR$/ui/arena/arena/styles.clj" />
         <option value="$PROJECT_DIR$/ui/spec/ants/ui/mocking.clj" />
+        <option value="$PROJECT_DIR$/ui/arena/arena/players/arena.clj" />
+        <option value="$PROJECT_DIR$/ui/arena/arena/props.clj" />
+        <option value="$PROJECT_DIR$/api/src/ants/api/core.clj" />
         <option value="$PROJECT_DIR$/ui/spec/ants/ui/core_spec.clj" />
         <option value="$PROJECT_DIR$/ui/src/ants/ui/core.clj" />
       </list>
@@ -181,9 +167,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-      <pane id="Favorites" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -258,6 +241,60 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="ui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="arena" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ant_sparring" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="arena" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="arena" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ant_sparring" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="arena" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="arena" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="players" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ant_sparring" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="api" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -282,6 +319,9 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="Favorites" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -508,6 +548,7 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
+      <changelist id="d6d35dd5-6767-4927-8051-80327c3a529d" name="Default" comment="" />
       <created>1326227238181</created>
       <updated>1326227238181</updated>
     </task>
@@ -520,7 +561,6 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23579545" sideWeight="0.9967949" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -533,12 +573,13 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="JProfiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1923077" sideWeight="0.5577651" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.44223484" sideWeight="0.9236111" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1917735" sideWeight="0.5587121" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.44128788" sideWeight="0.9236111" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23579545" sideWeight="0.9967949" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsManagerConfiguration">
@@ -588,107 +629,104 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/engine/project.clj">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="20" selection-start="181" selection-end="181" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/src/ants/api/view/view_helpers.clj">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="9" selection-start="9" selection-end="9" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/spec/ants/api/core_spec.clj">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="23" selection-start="177" selection-end="177" vertical-scroll-proportion="0.17352185">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/config/development.clj">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/Procfile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/project.clj">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="27" selection-start="378" selection-end="378" vertical-scroll-proportion="0.17352185">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/api/config/environment.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="30" selection-start="67" selection-end="67" vertical-scroll-proportion="0.057840616">
-          <folding />
-        </state>
+        <state line="3" column="30" selection-start="67" selection-end="67" vertical-scroll-proportion="0.057840616" />
       </provider>
     </entry>
     <entry file="jar:///System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Classes/classes.jar!/java/util/concurrent/ScheduledThreadPoolExecutor.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="13" selection-start="158" selection-end="158" vertical-scroll-proportion="0.12631579">
-          <folding />
-        </state>
+        <state line="5" column="13" selection-start="158" selection-end="158" vertical-scroll-proportion="0.12631579" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/engine/src/ants/engine/core.clj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="20" selection-start="20" selection-end="96" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/engine/spec/ants/engine/core_spec.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="88" column="95" selection-start="2781" selection-end="2781" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="88" column="95" selection-start="2781" selection-end="2781" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ui/project.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="21" selection-start="268" selection-end="268" vertical-scroll-proportion="0.0">
+        <state line="6" column="21" selection-start="268" selection-end="268" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ui/arena/styles.clj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/src/ants/api/core.clj">
+    <entry file="file://$PROJECT_DIR$/ui/spec/ants/ui/production_spec.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="54" selection-start="564" selection-end="564" vertical-scroll-proportion="0.0">
+        <state line="17" column="58" selection-start="685" selection-end="685" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ui/arena/stages.clj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="18" selection-start="117" selection-end="117" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ui/arena/production.clj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="77" selection-start="202" selection-end="202" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ui/arena/arena/styles.clj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="89" column="167" selection-start="1379" selection-end="1405" vertical-scroll-proportion="0.49197862">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ui/arena/arena/players/arena.clj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ui/spec/ants/ui/mocking.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="38" selection-start="350" selection-end="350" vertical-scroll-proportion="0.0">
+        <state line="9" column="16" selection-start="185" selection-end="185" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/engine/src/ants/engine/core.clj">
+    <entry file="file://$PROJECT_DIR$/api/src/ants/api/core.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="20" selection-start="20" selection-end="96" vertical-scroll-proportion="0.0">
+        <state line="23" column="90" selection-start="718" selection-end="718" vertical-scroll-proportion="0.19786096">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ui/spec/ants/ui/core_spec.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="81" column="52" selection-start="3158" selection-end="3158" vertical-scroll-proportion="0.0">
+        <state line="155" column="29" selection-start="6262" selection-end="6262" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ui/arena/arena/props.clj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="6" selection-start="654" selection-end="754" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ui/src/ants/ui/core.clj">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="94" column="68" selection-start="2007" selection-end="2007" vertical-scroll-proportion="0.35714287">
+        <state line="46" column="41" selection-start="1381" selection-end="1381" vertical-scroll-proportion="0.64171124">
           <folding />
         </state>
       </provider>

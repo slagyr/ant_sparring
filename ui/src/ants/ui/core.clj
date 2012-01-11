@@ -1,17 +1,68 @@
 (ns ants.ui.core
+  (:use
+    [limelight.clojure.core]
+    [limelight.clojure.prop-building])
   (:import
     [java.util.concurrent TimeUnit ScheduledThreadPoolExecutor]))
+
+; UI ------------------------------------------------------------
 
 (defprotocol AntsUI
   (update-ui [this data]))
 
+(defn- translated-location [thing]
+  (let [[x y] (:location thing)]
+    {:x (+ 300 (* 60 x)) :y (+ 300 (* 60 y))}))
+
+(defn- options-for [thing]
+  (let [options (translated-location thing)]
+    (if-let [name (:name thing)]
+      (assoc options :text name :background-color (:color thing))
+      options)))
+
+(defn place-stuff [scene stuff]
+  (let [world (find-by-id scene "world")]
+    (.removeAll (.getPeer world))
+    (build-props world
+      (vec
+        (for [thing stuff]
+          [(:type thing) (options-for thing)])))))
+
+(defn place-scores [scene scores]
+  (let [scores-prop (find-by-id scene "scores")]
+    (.removeAll (.getPeer scores-prop))
+    (build-props scores-prop
+      (vec
+        (for [score scores]
+          [:score {:background-color (:color score)}
+           [:score-name {:text (:name score)}]
+           [:score-value {:text (str (:points score))}]])))))
+
+(defn place-logs [scene logs]
+  (let [log-prop (find-by-id scene "log")]
+    (.removeAll (.getPeer log-prop))
+    (build-props log-prop
+      (vec
+        (for [entry logs]
+          [:log-entry {:text entry}])))))
+
+(deftype LimelightAntsUI [production]
+  AntsUI
+  (update-ui [this data]
+    (let [theater (theater production)
+          stage (get-stage theater "arena")
+          scene (scene stage)]
+      (place-stuff scene (:stuff data))
+      (place-scores scene (:scores data))
+      (place-logs scene (:log data)))))
+
+(defn new-ants-ui [production]
+  (LimelightAntsUI. production))
+
+; DATA_SOURCE ---------------------------------------------------
+
 (defprotocol AntsDataSource
   (curl [this url]))
-
-(defprotocol AntsInteractor
-  (startup [this host])
-  (shutdown [this])
-  (update [this]))
 
 (defn- do-curl [url-str]
   (let [url (java.net.URL. url-str)
@@ -21,6 +72,21 @@
     (try
       (read pushback)
       (finally (.close pushback)))))
+
+(deftype RealAntsDataSource []
+  AntsDataSource
+  (curl [this url] (do-curl url)))
+
+(defn new-ants-data-source []
+  (RealAntsDataSource.))
+
+; INTERACTOR -----------------------------------------------------
+
+(defprotocol AntsInteractor
+  (startup [this host])
+  (shutdown [this])
+  (update [this]))
+
 
 (def COLORS
   ["alice_blue"
