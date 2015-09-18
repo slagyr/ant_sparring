@@ -10,4 +10,4 @@
             :plugins [[speclj "3.3.1"]]
             :test-paths ["spec"]
             :source-paths ["src"]
-            :main ants.api.core)
+            :main ants.api)

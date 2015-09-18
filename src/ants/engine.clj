@@ -25,7 +25,7 @@
 
 (defn- name-taken? [world name]
   (or
-    (some #(= name (:name %)) (vals @(.stuff world)))
+    (some #(= name (:team %)) (vals @(.stuff world)))
     (some #(= name (:name %)) (vals @(.commands world)))))
 
 (defn- check-single-command [world id]
@@ -134,11 +134,11 @@
 (defn- new-location [[x y] dir]
   (cond
     (= "n" dir) [x (dec y)]
-    (= "ne" dir) [(inc x) (inc y)]
+    (= "ne" dir) [(inc x) (dec y)]
     (= "e" dir) [(inc x) y]
-    (= "se" dir) [(inc x) (dec y)]
+    (= "se" dir) [(inc x) (inc y)]
     (= "s" dir) [x (inc y)]
-    (= "sw" dir) [(dec x) (int y)]
+    (= "sw" dir) [(dec x) (inc y)]
     (= "w" dir) [(dec x) y]
     (= "nw" dir) [(dec x) (dec y)]))
 

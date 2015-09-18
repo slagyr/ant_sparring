@@ -2,7 +2,7 @@
   (:require [ants.engine :as ant]
             [compojure.core :refer [defroutes GET]]
             [compojure.route :refer [not-found]]
-            [joodo.middleware.request :refer [wrap-bind-request]]
+            [joodo.middleware.request :refer [wrap-bind-request *request*]]
             [org.httpkit.server :refer [run-server]]
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             [ring.middleware.params :refer [wrap-params]]
@@ -19,16 +19,18 @@
 (defn do-cmd [cmd]
   (try
     (let [id (cmd)]
-      (locking ant/*world* (.wait ant/*world* ant/TICK-DURATION))
+      (locking ant/*world* (.wait ant/*world* (* 2 ant/TICK-DURATION)))
       (marshal 200 {:response "ok" :stat (ant/stat ant/*world* id)}))
     (catch Exception e
       (marshal 500 {:response "error" :message (.getMessage e)}))))
 
 (def DOC
   "Commands:
-    /join/:name           Join the arena.  Your name must be unique.
-    /:id/look             Look around. See what's up.
-    /:id/go/:direction    Move either north, east, south, or west"
+    /join/:name               Join the arena.  Your (team) name must be unique.  Returns the id of your new-born nest.
+    /:nest-id/spawn           Spawns and ant.  Requires 1 food.  Returns the id of your new ant.
+    /:ant-id/look             Look around. See what's up.
+    /:ant-id/go/:direction    Move either n, ne, e, se, s, sw, w, nw
+    /:id/stat                 Immediately returns the status of the object with :id"
   )
 
 (defroutes handler

@@ -14,14 +14,27 @@
     (should= {} @commands))
 
   (it "can join the world"
-    (let [result (join @world "Joe")
+    (let [result (join @world "Joe" "client")
           command (get @commands result)]
       (should-not= nil result)
       (should= 1 (count @commands))
       (should= :join (:command command))
       (should= "Joe" (:name command))
+      (should= "client" (:client command))
       (should= result (:id command))
       (should-not= nil (:timestamp command))))
+
+  #_(it "cant join twice from same client"
+      (join @world "Joe" "10.10.0.1")
+      (join @world "Mike" "10.10.0.1")
+      (tick
+
+        (should-not= nil result)
+        (should= 1 (count @commands))
+        (should= :join (:command command))
+        (should= "Joe" (:name command))
+        (should= result (:id command))
+        (should-not= nil (:timestamp command))))
 
   (it "can't join game if name is in commands"
     (join @world "Joe")
@@ -62,7 +75,7 @@
       (tick @world)
       (doseq [i (range 5)] (spawn @world nest-id) (tick @world))
       (should-throw Exception "You need food to spawn an ant."
-        (spawn @world nest-id))))
+                    (spawn @world nest-id))))
 
 
   (context "with one ant"
