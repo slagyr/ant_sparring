@@ -13,7 +13,7 @@
     (ref [])
     (atom nil)))
 
-(def *world* (new-world))
+(def ^:dynamic *world* (new-world))
 
 ; COMMAND GENERATION -----------------------------------------------------------------
 

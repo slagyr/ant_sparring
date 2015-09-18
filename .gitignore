@@ -3,3 +3,5 @@ out
 classes
 .idea
 */target
+api/resources/public/cljs
+.specljs-timestamp
