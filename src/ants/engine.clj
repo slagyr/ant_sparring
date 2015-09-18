@@ -1,4 +1,4 @@
-(ns ants.engine.core
+(ns ants.engine
   (:import
     [java.util.concurrent TimeUnit ScheduledThreadPoolExecutor]))
 

@@ -1,7 +1,6 @@
 (defproject ants/api "0.0.1"
             :description "Web platform/api for Ants Sparring"
-            :dependencies [[ants/engine "1.0.0"]
-                           [joodo "2.1.0"]
+            :dependencies [[joodo "2.1.0"]
                            [org.clojure/clojure "1.7.0"]
                            [pandeiro/http-kit "2.1.20-SNAPSHOT"]
                            [ring-server/ring-server "0.3.1" :exclusions [ring-refresh]]]

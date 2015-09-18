@@ -1,7 +1,6 @@
-(ns ants.engine.core-spec
-  (:use
-    [speclj.core]
-    [ants.engine.core]))
+(ns ants.engine.engine-spec
+  (:require [speclj.core :refer :all]
+            [ants.engine :refer :all]))
 
 (describe "Ants Engine Core"
 
@@ -27,7 +26,7 @@
   (it "can't join game if name is in commands"
     (join @world "Joe")
     (should-throw java.lang.Exception "Join failed! The name 'Joe' is already taken"
-      (join @world "Joe"))
+                  (join @world "Joe"))
     (should= 1 (count @commands)))
 
   (it "ant enters world on tick"
@@ -81,18 +80,18 @@
 
     (it "ant can't go in blah direction"
       (should-throw java.lang.Exception "You can't go that way silly ant!"
-        (go @world @ant-id "blah"))
+                    (go @world @ant-id "blah"))
       (should= 0 (count @commands)))
 
     (it "can't add command for existing id"
       (go @world @ant-id "west")
       (should-throw java.lang.Exception "You're allowed only 1 command per tick"
-        (go @world @ant-id "north"))
+                    (go @world @ant-id "north"))
       (should= 1 (count @commands)))
 
     (it "can't add command missing ant"
       (should-throw java.lang.Exception "Invalid ID (missing_id).  It appears you don't exist."
-        (go @world "missing_id" "north"))
+                    (go @world "missing_id" "north"))
       (should= 0 (count @commands)))
 
     (it "ant can look around"

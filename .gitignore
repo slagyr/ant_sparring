@@ -2,7 +2,7 @@ lib
 out
 classes
 .idea
-*/target
+target
 .lein-repl-history
 .nrepl-port
 .specljs-timestamp

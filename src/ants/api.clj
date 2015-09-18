@@ -1,24 +1,12 @@
-(ns ants.api.core
-  (:require [ants.engine.core :as ant]
+(ns ants.api
+  (:require [ants.engine :as ant]
             [compojure.core :refer [defroutes GET]]
             [compojure.route :refer [not-found]]
-            [joodo.middleware.asset-fingerprint :refer [wrap-asset-fingerprint]]
-            [joodo.middleware.favicon :refer [wrap-favicon-bouncer]]
-            [joodo.middleware.keyword-cookies :refer [wrap-keyword-cookies]]
             [joodo.middleware.request :refer [wrap-bind-request]]
-            [joodo.middleware.rpc :refer [wrap-rpc]]
-            [joodo.middleware.util :refer [wrap-development-maybe]]
             [org.httpkit.server :refer [run-server]]
-            [ring.middleware.file-info :refer [wrap-file-info]]
-            [ring.middleware.flash :refer [wrap-flash]]
-            [ring.middleware.head :refer [wrap-head]]
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
-            [ring.middleware.multipart-params :refer [wrap-multipart-params]]
             [ring.middleware.params :refer [wrap-params]]
-            [ring.middleware.resource :refer [wrap-resource]]
-            [ring.middleware.session :refer [wrap-session]]
-            [org.httpkit.server :refer [run-server]]
-            [joodo.env :as env]))
+            [org.httpkit.server :refer [run-server]]))
 
 (defn- text [& message]
   {:status 200 :content-type "text/plain" :body (apply str message)})
@@ -28,22 +16,12 @@
    :content-type "text/plain"
    :body         (with-out-str (prn value))})
 
-;(defmacro do-cmd [call]
-;  `(try
-;     (let [id# ~call]
-;       (locking ant/*world* (.wait ant/*world* ant/TICK-DURATION))
-;       (marshal 200 {:response "ok" :stat (ant/stat ant/*world* id#)}))
-;     (catch Exception ~'e
-;       (.printStackTrace ~'e)
-;       (marshal 500 {:response "error" :message (.getMessage ~'e)}))))
-
 (defn do-cmd [cmd]
   (try
     (let [id (cmd)]
       (locking ant/*world* (.wait ant/*world* ant/TICK-DURATION))
       (marshal 200 {:response "ok" :stat (ant/stat ant/*world* id)}))
     (catch Exception e
-      (.printStackTrace e)
       (marshal 500 {:response "error" :message (.getMessage e)}))))
 
 (def DOC
@@ -67,20 +45,9 @@
 
 (def app
   (-> handler
-      ;wrap-development-maybe
       wrap-bind-request
       wrap-keyword-params
-      wrap-params
-      ;wrap-multipart-params
-      ;wrap-flash
-      ;wrap-keyword-cookies
-      ;wrap-session
-      ;wrap-favicon-bouncer
-      ;(wrap-resource "public")
-      ;wrap-asset-fingerprint
-      ;wrap-file-info
-      ;wrap-head
-      ))
+      wrap-params))
 
 (defn server [world]
   (ant/start world)
