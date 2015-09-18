@@ -8,12 +8,15 @@
 
 (defn new-world []
   (World.
-    (ref {:nest {:type :nest :id :nest :location [0 0]}})
+    (ref {})
     (ref {})
     (ref [])
     (atom nil)))
 
 (def ^:dynamic *world* (new-world))
+
+
+(def DIRECTIONS #{"n" "ne" "e" "se" "s" "sw" "w" "nw"})
 
 ; COMMAND GENERATION -----------------------------------------------------------------
 
@@ -29,15 +32,15 @@
   (when (get @(.commands world) id)
     (throw (Exception. "You're allowed only 1 command per tick"))))
 
-(defn- check-valid-id [world id]
-  (when (not (get @(.stuff world) id))
-    (throw (Exception. (format "Invalid ID (%s).  It appears you don't exist." id)))))
+(defn- check-valid-id [world id type]
+  (let [thing (get @(.stuff world) id)]
+    (when-not (and thing (= type (:type thing)))
+      (throw (Exception. (format "Invalid ID (%s).  This %s doesn't exist." id (name type)))))))
 
-(defn- check-cmd-id [world id]
+(defn- check-cmd-id [world id type]
   (check-single-command world id)
-  (check-valid-id world id))
+  (check-valid-id world id type))
 
-(def DIRECTIONS #{"north" "east" "west" "south"})
 (defn- check-direction [direction]
   (when (not (DIRECTIONS direction))
     (throw (Exception. "You can't go that way silly ant!"))))
@@ -50,16 +53,26 @@
       (alter (.commands world) assoc id {:command :join :name name :id id :timestamp (System/nanoTime)})
       id)))
 
+(defn spawn [world nest]
+  (dosync
+    (check-cmd-id world nest :nest)
+    (let [nest-val (get @(.stuff world) nest)
+          id (gen-id)]
+      (when (< (:food nest-val) 1)
+        (throw (Exception. "You need food to spawn an ant.")))
+      (alter (.commands world) assoc id {:command :spawn :nest nest :id id :timestamp (System/nanoTime)})
+      id)))
+
 (defn go [world ant direction]
   (dosync
-    (check-cmd-id world ant)
+    (check-cmd-id world ant :ant)
     (check-direction direction)
     (alter (.commands world) assoc ant {:command :go :id ant :direction direction :timestamp (System/nanoTime)})
     ant))
 
 (defn look [world ant]
   (dosync
-    (check-cmd-id world ant)
+    (check-cmd-id world ant :ant)
     (alter (.commands world) assoc ant {:command :look :id ant :timestamp (System/nanoTime)})
     ant))
 
@@ -84,30 +97,50 @@
       (ref-set (.log world) [])
       response)))
 
-(defn stat [world ant]
-  (check-valid-id world ant)
-  (get @(.stuff world) ant))
 
 ; COMMAND EXECUTION -----------------------------------------------------------------
 
-(def ant-template
-  {:type :ant
+(def nest-template
+  {:type     :nest
    :location [0 0]
-   :points 0
+   :food     5
+   :team     "Unknown"
+   :id       "Unknown"})
+
+(def ant-template
+  {:type     :ant
+   :location [0 0]
    :got-food false
-   :name "Unknown"
-   :id "Unknown"})
+   :team     "Unknown"
+   :nest     -1
+   :n        -1
+   :id       "Unknown"})
 
 (defn- do-join [stuff command]
-  (alter stuff assoc (:id command) (assoc ant-template :name (:name command) :id (:id command)))
-  (format "%s has entered the world!" (:name command)))
+  (alter stuff assoc (:id command) (assoc nest-template :team (:name command) :id (:id command)))
+  (format "Team %s has entered the world!" (:name command)))
+
+(defn- do-spawn [stuff {:keys [nest id]}]
+  (let [nest-val (get @stuff nest)
+        team-ants (filter #(and (= :ant (:type %)) (= (:team nest) (:team %))) (vals @stuff))]
+    (alter stuff assoc
+           id (assoc ant-template :team (:team nest-val)
+                                  :id id
+                                  :n (inc (count team-ants))
+                                  :nest nest)
+           nest (update-in nest-val [:food] dec))
+    (format "Team %s has spawned a new ant." (:team nest-val))))
 
 (defn- new-location [[x y] dir]
   (cond
-    (= "north" dir) [x (- y 1)]
-    (= "south" dir) [x (+ y 1)]
-    (= "east" dir) [(+ x 1) y]
-    (= "west" dir) [(- x 1) y]))
+    (= "n" dir) [x (dec y)]
+    (= "ne" dir) [(inc x) (inc y)]
+    (= "e" dir) [(inc x) y]
+    (= "se" dir) [(inc x) (dec y)]
+    (= "s" dir) [x (inc y)]
+    (= "sw" dir) [(dec x) (int y)]
+    (= "w" dir) [(dec x) y]
+    (= "nw" dir) [(dec x) (dec y)]))
 
 (defn- food-at? [stuff loc]
   (some
@@ -123,11 +156,16 @@
   (let [value (or (:points ant) 0)]
     (assoc ant :points (+ points value))))
 
-(defn- award-food [ant food? fed?]
+(defn- update-ant-food [ant food? fed?]
   (cond
     food? (assoc (award-points ant 1) :got-food true)
     fed? (assoc (award-points ant 2) :got-food false)
     :else ant))
+
+(defn update-nest-food [nest fed-nest?]
+  (if fed-nest?
+    (update-in nest [:food] inc)
+    nest))
 
 (defn- do-go [stuff command]
   (let [ant-id (:id command)
@@ -137,13 +175,14 @@
         new-loc (new-location current-loc dir)
         found-food? (and (not (:got-food ant)) (food-at? @stuff new-loc))
         fed-nest? (and (:got-food ant) (nest-at? @stuff new-loc))
-        ant (award-food (assoc ant :location new-loc) found-food? fed-nest?)]
-    (alter stuff assoc ant-id ant)
-    (format "%s went %s%s" (:name ant) dir
-      (cond
-        found-food? " and found some FOOD! (1 point)"
-        fed-nest? " and FED HIS NEST! (2 points)"
-        :else ""))))
+        ant (update-ant-food (assoc ant :location new-loc) found-food? fed-nest?)
+        nest (update-nest-food (get @stuff (:nest ant)) fed-nest?)]
+    (alter stuff assoc ant-id ant (:nest ant) nest)
+    (format "%s-%d went %s%s" (:team ant) (:n ant) dir
+            (cond
+              found-food? " and found some FOOD!"
+              fed-nest? " and FED HIS NEST!"
+              :else ""))))
 
 (defn- do-place-food [stuff command]
   (let [food-id (:id command)
@@ -159,16 +198,17 @@
 
 (defn- do-look [stuff command]
   (let [ant (get @stuff (:id command))]
-    (format "%s looks around" (:name ant))))
+    (format "%s-%d looks around" (:team ant) (:n ant))))
 
 (def command-map
   {
-    :join do-join
-    :go do-go
-    :place-food do-place-food
-    :remove-food do-remove-food
-    :look do-look
-    })
+   :join        do-join
+   :go          do-go
+   :place-food  do-place-food
+   :remove-food do-remove-food
+   :look        do-look
+   :spawn       do-spawn
+   })
 
 (defn execute-command [stuff command]
   (let [cmd-fn (get command-map (:command command))]
@@ -193,3 +233,29 @@
   (when @(.scheduler world)
     (.shutdown @(.scheduler world))
     (reset! (.scheduler world) nil)))
+
+(defn inspect [world]
+  (println "World")
+  (doseq [[k v] @(.stuff world)]
+    (prn k v))
+  (doseq [l @(.log world)]
+    (println l))
+  (doseq [c @(.commands world)]
+    (prn c)))
+
+(defn describe-surroundings [world ant]
+  (let [loc (:location ant)]
+    (assoc ant :surroundings
+               (reduce
+                 (fn [r d]
+                   (let [new-loc (new-location loc d)]
+                     (assoc r d (vec (filter #(= new-loc (:location %)) (vals @(.stuff world)))))))
+                 {}
+                 DIRECTIONS))))
+
+(defn stat [world id]
+  (let [thing (get @(.stuff world) id)]
+    (when (nil? thing) (throw (Exception. (str "Missing id for stat: " id))))
+    (if (= :ant (:type thing))
+      (describe-surroundings world thing)
+      thing)))

@@ -1,4 +1,4 @@
-(ns ants.engine.engine-spec
+(ns ants.engine-spec
   (:require [speclj.core :refer :all]
             [ants.engine :refer :all]))
 
@@ -10,7 +10,7 @@
   (with log @(.log @world))
 
   (it "can create a new world"
-    (should= {:nest {:type :nest :id :nest :location [0, 0]}} @stuff)
+    (should= {} @stuff)
     (should= {} @commands))
 
   (it "can join the world"
@@ -29,53 +29,78 @@
                   (join @world "Joe"))
     (should= 1 (count @commands)))
 
-  (it "ant enters world on tick"
+  (it "nest enters world on tick"
     (let [id (join @world "Phil")
           results (tick @world)]
       (should= {} @commands)
+      (should= 1 (count @stuff))
+      (should= "Team Phil has entered the world!" (last @log))
+      (let [nest (get @stuff id)]
+        (should= :nest (:type nest))
+        (should= "Phil" (:team nest))
+        (should= 5 (:food nest))
+        (should= [0 0] (:location nest)))))
+
+  (it "spawning a new ant"
+    (let [nest-id (join @world "Phil")
+          _ (tick @world)
+          ant-id (spawn @world nest-id)]
+      (tick @world)
+      (should= {} @commands)
       (should= 2 (count @stuff))
-      (should= "Phil has entered the world!" (last @log))
-      (let [ant (get @stuff id)]
+      (should= "Team Phil has spawned a new ant." (last @log))
+      (let [nest (get @stuff nest-id)
+            ant (get @stuff ant-id)]
+        (should= 4 (:food nest))
         (should= :ant (:type ant))
-        (should= "Phil" (:name ant))
+        (should= "Phil" (:team ant))
+        (should= nest-id (:nest ant))
         (should= [0 0] (:location ant)))))
+
+  (it "spawning a new ant"
+    (let [nest-id (join @world "Phil")]
+      (tick @world)
+      (doseq [i (range 5)] (spawn @world nest-id) (tick @world))
+      (should-throw Exception "You need food to spawn an ant."
+        (spawn @world nest-id))))
 
 
   (context "with one ant"
 
-    (with ant-id (join @world "George"))
+    (with nest-id (join @world "George"))
+    (with ant-id (do @nest-id (tick @world) (spawn @world @nest-id)))
     (before (do @ant-id (tick @world)))
 
     (it "can give go command"
-      (go @world @ant-id "north")
+      (go @world @ant-id "n")
       (let [command (get @commands @ant-id)]
         (should-not= nil command)
         (should= :go (:command command))
-        (should= "north" (:direction command))
+        (should= "n" (:direction command))
         (should= @ant-id (:id command))))
 
     (it "ant can go north"
-      (go @world @ant-id "north")
+      (go @world @ant-id "n")
       (tick @world)
-      (should= "George went north" (last @log))
+      (should= "George-1 went n" (last @log))
       (should= [0 -1] (:location (get @stuff @ant-id))))
 
     (it "ant can go south"
-      (go @world @ant-id "south")
+      (go @world @ant-id "s")
       (tick @world)
-      (should= "George went south" (last @log))
+      (should= "George-1 went s" (last @log))
       (should= [0 1] (:location (get @stuff @ant-id))))
 
     (it "ant can go east"
-      (go @world @ant-id "east")
+      (go @world @ant-id "e")
       (tick @world)
-      (should= "George went east" (last @log))
+      (should= "George-1 went e" (last @log))
       (should= [1 0] (:location (get @stuff @ant-id))))
 
     (it "ant can go west"
-      (go @world @ant-id "west")
+      (go @world @ant-id "w")
       (tick @world)
-      (should= "George went west" (last @log))
+      (should= "George-1 went w" (last @log))
       (should= [-1 0] (:location (get @stuff @ant-id))))
 
     (it "ant can't go in blah direction"
@@ -84,13 +109,13 @@
       (should= 0 (count @commands)))
 
     (it "can't add command for existing id"
-      (go @world @ant-id "west")
+      (go @world @ant-id "w")
       (should-throw java.lang.Exception "You're allowed only 1 command per tick"
                     (go @world @ant-id "north"))
       (should= 1 (count @commands)))
 
     (it "can't add command missing ant"
-      (should-throw java.lang.Exception "Invalid ID (missing_id).  It appears you don't exist."
+      (should-throw java.lang.Exception "Invalid ID (missing_id).  This ant doesn't exist."
                     (go @world "missing_id" "north"))
       (should= 0 (count @commands)))
 
@@ -101,43 +126,42 @@
         (should= :look (:command command))
         (should= @ant-id (:id command)))
       (tick @world)
-      (should= "George looks around" (last @log)))
+      (should= "George-1 looks around" (last @log)))
 
     (context "finding food"
       (it "gets stored and award points"
         (place-food @world [1 0])
         (tick @world)
-        (go @world @ant-id "east")
+        (go @world @ant-id "e")
         (let [results (tick @world)
               ant (get @stuff @ant-id)]
           (should= true (:got-food ant))
-          (should= 1 (:points ant))
-          (should= "George went east and found some FOOD! (1 point)" (last @log))))
+          (should= "George-1 went e and found some FOOD!" (last @log))))
 
       (it "does nothing if it's already got food"
         (place-food @world [1 0])
         (place-food @world [1 1])
         (tick @world)
-        (go @world @ant-id "east")
+        (go @world @ant-id "e")
         (tick @world)
-        (go @world @ant-id "north")
+        (go @world @ant-id "n")
         (let [results (tick @world)
               ant (get @stuff @ant-id)]
           (should= true (:got-food ant))
-          (should= 1 (:points ant))
-          (should= "George went north" (last @log))))
+          (should= "George-1 went n" (last @log))))
 
       (it "points for taking food home"
         (place-food @world [1 0])
         (tick @world)
-        (go @world @ant-id "east")
+        (go @world @ant-id "e")
         (tick @world)
-        (go @world @ant-id "west")
+        (go @world @ant-id "w")
         (tick @world)
-        (let [ant (get @stuff @ant-id)]
+        (let [ant (get @stuff @ant-id)
+              nest (get @stuff @nest-id)]
           (should= false (:got-food ant))
-          (should= 3 (:points ant))
-          (should= "George went west and FED HIS NEST! (2 points)" (last @log))))
+          (should= 5 (:food nest))
+          (should= "George-1 went w and FED HIS NEST!" (last @log))))
 
       )
 
@@ -157,11 +181,10 @@
         (let [result (stat @world @ant-id)]
           (should= :ant (:type result))
           (should= @ant-id (:id result))
-          (should= "George" (:name result))
+          (should= "George" (:team result))
           (should= [0 0] (:location result))
           (should= false (:got-food result))
-          (should= 0 (:points result))))
-
+          (should= @nest-id (:nest result))))
       )
     )
 

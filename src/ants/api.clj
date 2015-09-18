@@ -41,6 +41,8 @@
   (GET "/join/:name" {{name :name} :params} (do-cmd #(ant/join ant/*world* name)))
   (GET "/:id/look" {{id :id} :params} (do-cmd #(ant/look ant/*world* id)))
   (GET "/:id/go/:direction" {{id :id dir :direction} :params} (do-cmd #(ant/go ant/*world* id dir)))
+  (GET "/:id/spawn" {{id :id dir :direction} :params} (do-cmd #(ant/spawn ant/*world* id)))
+  (GET "/:id/stat" {{id :id} :params} (marshal 200 {:response "ok" :stat (ant/stat ant/*world* id)}))
   (not-found "Are you lost little ant?"))
 
 (def app
