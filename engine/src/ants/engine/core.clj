@@ -13,7 +13,7 @@
     (ref [])
     (atom nil)))
 
-(def *world* (new-world))
+(def ^:dynamic *world* (new-world))
 
 ; COMMAND GENERATION -----------------------------------------------------------------
 
@@ -193,4 +193,3 @@
   (when @(.scheduler world)
     (.shutdown @(.scheduler world))
     (reset! (.scheduler world) nil)))
-
