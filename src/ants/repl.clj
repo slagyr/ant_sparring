@@ -20,9 +20,6 @@
     (doseq [f food]
       (prn f))))
 
-;(do (engine/place-food world [2 2]) (inspect))
-;(do (engine/remove-food world [1 1]) (inspect))
-
 (defn scores []
   (let [stuff (vals @(.stuff world))
         nests (filter #(= :nest (:type %)) stuff)
