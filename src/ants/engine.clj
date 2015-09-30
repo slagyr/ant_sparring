@@ -1,4 +1,5 @@
 (ns ants.engine
+  (:require [ants.log :as log])
   (:import
     [java.util.concurrent TimeUnit ScheduledThreadPoolExecutor]))
 
@@ -224,15 +225,30 @@
       (ref-set (.commands world) {})
       (locking world (.notifyAll world)))))
 
-(defn start [world]
-  (when (nil? @(.scheduler world))
-    (reset! (.scheduler world) (ScheduledThreadPoolExecutor. 1))
-    (.scheduleWithFixedDelay @(.scheduler world) #(tick world) 0 TICK-DURATION TimeUnit/MILLISECONDS)))
+;(defn start [world]
+;  (when (nil? @(.scheduler world))
+;    (reset! (.scheduler world) (ScheduledThreadPoolExecutor. 1))
+;    (.scheduleWithFixedDelay @(.scheduler world) #(tick world) 0 TICK-DURATION TimeUnit/MILLISECONDS)))
 
-(defn stop [world]
-  (when @(.scheduler world)
-    (.shutdown @(.scheduler world))
-    (reset! (.scheduler world) nil)))
+(defn start [app]
+  (log/info "Starting Ant Engine")
+  (if-let [engine (:engine app)]
+    (log/warn "Ant Engine is already started!")
+    (let [world (:world app)]
+      (assoc app :engine
+                 (doto (ScheduledThreadPoolExecutor. 1)
+                   (.scheduleWithFixedDelay #(tick world) 0 TICK-DURATION TimeUnit/MILLISECONDS))))))
+
+;(defn stop [world]
+;  (when @(.scheduler world)
+;    (.shutdown @(.scheduler world))
+;    (reset! (.scheduler world) nil)))
+
+(defn stop [app]
+  (log/info "Stopping Ant Engine")
+  (if-let [engine (:engine app)]
+    (.shutdown engine)
+    (log/warn "Ant Engine is missing.  Can't stop.")))
 
 (defn inspect [world]
   (println "World")

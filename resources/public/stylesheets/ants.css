@@ -1,0 +1,60 @@
+html, body {
+    background: linear-gradient(to bottom, #f0f9ff 0%, #cbebff 100%);
+    font-family: sans-serif;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+h1 {
+    font-size: 18pt;
+    text-align: center;
+    margin: 0 0 0 0;
+}
+
+.arena {
+    width: 1000px;
+    height: 700px;
+    margin: auto;
+}
+
+.top-panel {
+    width: 100%;
+    height: 100px;
+    background: red;
+}
+
+.middle {
+    width: 100%;
+    height: 500px;
+    clear: both;
+    background: orange;
+}
+
+.left-panel {
+    width: 250px;
+    height: 500px;
+    float: left;
+    background: lightgoldenrodyellow;
+}
+
+.right-panel {
+    width: 250px;
+    height: 500px;
+    float: left;
+    background: darkgreen;
+}
+
+.world {
+    width: 500px;
+    height: 500px;
+    float: left;
+    background: dodgerblue;
+}
+
+.bottom-panel {
+    width: 100%;
+    height: 100px;
+    background: indigo;
+}
+
