@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Leiningen: ring-server:0.3.1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/ring-server/ring-server/0.3.1/ring-server-0.3.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

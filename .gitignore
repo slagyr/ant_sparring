@@ -1,7 +1,7 @@
 lib
 out
 classes
-.idea
+#.idea
 target
 .lein-repl-history
 .nrepl-port
