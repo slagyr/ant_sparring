@@ -14,13 +14,13 @@
     (should= {} @commands))
 
   (it "can join the world"
-    (let [result (join @world "Joe" "client")
+    (let [result (join @world "Joe") ;"client")
           command (get @commands result)]
       (should-not= nil result)
       (should= 1 (count @commands))
       (should= :join (:command command))
       (should= "Joe" (:name command))
-      (should= "client" (:client command))
+      ;(should= "client" (:client command))
       (should= result (:id command))
       (should-not= nil (:timestamp command))))
 
@@ -241,6 +241,17 @@
             food (get @stuff food-id)]
         (should= nil food)
         (should= "The food at (5, 5) has disappeared" (last @log))))
+    )
+
+  (context "observer"
+
+    (it "world notifies abserver"
+      (let [state (atom nil)
+            observer (fn [stuff log] (reset! state [stuff log]))
+            world (new-world observer)]
+        (tick world)
+        (Thread/sleep 100)
+        (should= [{}[]] @state)))
     )
   )
 

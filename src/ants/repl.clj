@@ -1,9 +1,10 @@
 (ns ants.repl
   (:require [ants.api :as api]
+            [ants.app :as app]
             [ants.engine :as engine]
             [ants.gui :as gui]))
 
-(def world engine/*world*)
+(def world @app/world)
 (def server (atom nil))
 (defn start [] (reset! server (api/server world)))
 (defn stop [] (@server))

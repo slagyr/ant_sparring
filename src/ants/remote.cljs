@@ -97,5 +97,6 @@
       (reset! channel-socket chsk)
       (reset! receive-channel ch-recv)
       (reset! send! send-fn)
-      (reset! channel-state state))
+      (reset! channel-state state)
+      (start-router!))
     (throw (ex-info "Attempt to RE-open websocket!" {}))))

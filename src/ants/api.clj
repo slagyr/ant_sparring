@@ -2,7 +2,7 @@
   (:require [ants.app :as app]
             [ants.arena :as arena]
             [ants.engine :as engine]
-            [ants.init :as init]
+            [ants.log :as log]
             [ants.util :as util]
             [compojure.core :refer [defroutes GET]]
             [compojure.route :refer [not-found]]
@@ -27,9 +27,11 @@
 (defn do-cmd [cmd]
   (try
     (let [id (cmd)]
-      (locking engine/*world* (.wait engine/*world* (* 2 engine/TICK-DURATION)))
-      (marshal 200 {:response "ok" :stat (engine/stat engine/*world* id)}))
+      (locking @app/world (.wait @app/world (* 2 engine/TICK-DURATION)))
+      (prn "engine/*world*: " (.stuff @app/world))
+      (marshal 200 {:response "ok" :stat (engine/stat @app/world id)}))
     (catch Exception e
+      (log/error e)
       (marshal 500 {:response "error" :message (.getMessage e)}))))
 
 (def DOC
@@ -45,16 +47,16 @@
 (defroutes handler
   (GET "/" [] (text "Welcome to Ant Sparring!" "\n\n" DOC))
   (GET "/arena" [] (arena/html-response))
-  (GET "/_admin_/start" [] (do (engine/start engine/*world*) (text "The world has started")))
-  (GET "/_admin_/stop" [] (do (engine/stop engine/*world*) (text "The world has stopped")))
-  (GET "/_admin_/feed" [] (marshal 200 (engine/get-feed engine/*world*)))
-  (GET "/_admin_/place-food/:x/:y" {{x :x y :y} :params} (marshal 200 (engine/place-food engine/*world* [(Integer/parseInt x) (Integer/parseInt y)])))
-  (GET "/_admin_/remove-food/:x/:y" {{x :x y :y} :params} (marshal 200 (engine/remove-food engine/*world* [(Integer/parseInt x) (Integer/parseInt y)])))
-  (GET "/join/:name" {{name :name} :params} (do-cmd #(engine/join engine/*world* name)))
-  (GET "/:id/look" {{id :id} :params} (do-cmd #(engine/look engine/*world* id)))
-  (GET "/:id/go/:direction" {{id :id dir :direction} :params} (do-cmd #(engine/go engine/*world* id dir)))
-  (GET "/:id/spawn" {{id :id dir :direction} :params} (do-cmd #(engine/spawn engine/*world* id)))
-  (GET "/:id/stat" {{id :id} :params} (marshal 200 {:response "ok" :stat (engine/stat engine/*world* id)})))
+  (GET "/_admin_/start" [] (do (engine/start @app/world) (text "The world has started")))
+  (GET "/_admin_/stop" [] (do (engine/stop @app/world) (text "The world has stopped")))
+  (GET "/_admin_/feed" [] (marshal 200 (engine/get-feed @app/world)))
+  (GET "/_admin_/place-food/:x/:y" {{x :x y :y} :params} (marshal 200 (engine/place-food @app/world [(Integer/parseInt x) (Integer/parseInt y)])))
+  (GET "/_admin_/remove-food/:x/:y" {{x :x y :y} :params} (marshal 200 (engine/remove-food @app/world [(Integer/parseInt x) (Integer/parseInt y)])))
+  (GET "/join/:name" {{name :name} :params} (do-cmd #(engine/join @app/world name)))
+  (GET "/:id/look" {{id :id} :params} (do-cmd #(engine/look @app/world id)))
+  (GET "/:id/go/:direction" {{id :id dir :direction} :params} (do-cmd #(engine/go @app/world id dir)))
+  (GET "/:id/spawn" {{id :id dir :direction} :params} (do-cmd #(engine/spawn @app/world id)))
+  (GET "/:id/stat" {{id :id} :params} (marshal 200 {:response "ok" :stat (engine/stat @app/world id)})))
 
 (defn wrap-dev-maybe [handler]
   (if (env/development?)
@@ -74,7 +76,7 @@
 
 (def app
   (-> web-routes
-      wrap-dev-maybe
+      ;wrap-dev-maybe
       wrap-bind-request
       wrap-anti-forgery
       wrap-keyword-params
@@ -82,12 +84,3 @@
       wrap-session
       (wrap-resource "public")
       wrap-file-info))
-
-(defn -main []
-  (when (env/development?)
-    (let [init-refresh (util/resolve-var 'ants.refresh/init)]
-      (init-refresh 'ants.init/stop 'ants.init/start)))
-  (alter-var-root #'app/app assoc :world (engine/new-world))
-  (init/start)
-  (let [port (if-let [port-str (System/getenv "PORT")] (Integer/parseInt port-str) 8888)]
-    (run-server app {:port port})))

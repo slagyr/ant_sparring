@@ -20,7 +20,7 @@
             [lein-pdo "0.1.1"]]
   :test-paths ["spec"]
   :source-paths ["src"]
-  :main ants.api
+  :main ants.main
   :clean-targets ^{:protect false} [:target-path "resources/public/cljs"]
   :aliases {"cljs"    ["do" "clean," "run" "-m" "ants.cljs" "once"]
             "specljs" ["do" "clean," "run" "-m" "ants.cljs" "once" "development"]

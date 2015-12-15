@@ -21,7 +21,10 @@
   (log/with-log-level
     :info
     (log/info "Airworthy Environment: " (env/env :joodo-env))
-    (alter-var-root #'app/app start-services)))
+    (log/info "before starting app/app: " (keys @(app/app)))
+    (swap! (app/app) start-services)
+    (log/info "after startin app/app: " (keys @(app/app)))))
 
 (defn stop []
-  (alter-var-root #'app/app stop-services))
+  (swap! (app/app) stop-services)
+  (log/info "after stopping app/app: " (keys @(app/app))))

@@ -1,5 +1,6 @@
 (ns ants.arena
   (:require [ants.remote :as remote]
+            [ants.log :as log]
             [cognitect.transit :as transit]
             [goog.events]
             [reagent.core :as reagent]))
@@ -20,7 +21,9 @@
   )
 
 (defn ^:export init [payload-src]
+  (log/all!)
   (let [payload (transit/read transit-reader payload-src)
         body (.-body js/document)]
     (reagent/render-component [arena payload] body)
+    (log/info "connecting!")
     (remote/connect!)))

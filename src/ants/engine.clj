@@ -5,16 +5,20 @@
 
 (def TICK-DURATION 1000)
 
-(deftype World [stuff commands log scheduler])
+(deftype World [stuff commands log scheduler observer])
 
-(defn new-world []
-  (World.
-    (ref {})
-    (ref {})
-    (ref [])
-    (atom nil)))
+(defn new-world
+  ([] (new-world nil))
+  ([observer]
+   (log/report "NEW WORLD!!!!")
+   (World.
+     (ref {})
+     (ref {})
+     (ref [])
+     (atom nil)
+     observer)))
 
-(def ^:dynamic *world* (new-world))
+;(def ^:dynamic *world* (new-world))
 
 
 (def DIRECTIONS #{"n" "ne" "e" "se" "s" "sw" "w" "nw"})
@@ -212,23 +216,32 @@
    })
 
 (defn execute-command [stuff command]
-  (let [cmd-fn (get command-map (:command command))]
-    (if cmd-fn
-      (cmd-fn stuff command)
-      (throw (Exception. (str "No such command: " (:command command)))))))
+  (try
+    (let [cmd-fn (get command-map (:command command))]
+      (if cmd-fn
+        (cmd-fn stuff command)
+        (throw (Exception. (str "No such command: " (:command command))))))
+    (catch Exception e
+      (log/error e)
+      (throw e))))
 
-(defn tick [world]
+(defn- exec-commands [world]
   (dosync
     (let [sorted-commands (sort #(.compareTo (:timestamp %1) (:timestamp %2)) (vals @(.commands world)))
           results (doall (map #(execute-command (.stuff world) %) sorted-commands))]
       (alter (.log world) concat results)
       (ref-set (.commands world) {})
-      (locking world (.notifyAll world)))))
+      results)))
 
-;(defn start [world]
-;  (when (nil? @(.scheduler world))
-;    (reset! (.scheduler world) (ScheduledThreadPoolExecutor. 1))
-;    (.scheduleWithFixedDelay @(.scheduler world) #(tick world) 0 TICK-DURATION TimeUnit/MILLISECONDS)))
+(defn tick [world]
+  (prn "(.stuff world): " (.stuff world))
+  (try
+    (let [results (exec-commands world)]
+      (log/report "results: " (pr-str results))
+      (locking world (.notifyAll world))
+      (when-let [observer (.observer world)]
+        (observer @(.stuff world) results)))
+    (catch Exception e (log/error e))))
 
 (defn start [app]
   (log/info "Starting Ant Engine")
@@ -239,16 +252,12 @@
                  (doto (ScheduledThreadPoolExecutor. 1)
                    (.scheduleWithFixedDelay #(tick world) 0 TICK-DURATION TimeUnit/MILLISECONDS))))))
 
-;(defn stop [world]
-;  (when @(.scheduler world)
-;    (.shutdown @(.scheduler world))
-;    (reset! (.scheduler world) nil)))
-
 (defn stop [app]
   (log/info "Stopping Ant Engine")
   (if-let [engine (:engine app)]
     (.shutdown engine)
-    (log/warn "Ant Engine is missing.  Can't stop.")))
+    (log/warn "Ant Engine is missing.  Can't stop."))
+  (dissoc app :engine))
 
 (defn inspect [world]
   (println "World")

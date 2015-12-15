@@ -92,3 +92,12 @@
   (routes
     (GET "/chsk" req (@get-handler req))
     (POST "/chsk" req (@post-handler req))))
+
+(defn world-updated [stuff last-logs]
+  (try
+    ;(log/info "stuff last-logs: " stuff (pr-str last-logs))
+    ;(prn "@connected-uids: " @connected-uids)
+    (doseq [uid (:any @@connected-uids)]
+      ;(prn "uid: " uid)
+      (@send-fn uid [:ants/update [stuff last-logs]]))
+    (catch Exception e (log/error e))))

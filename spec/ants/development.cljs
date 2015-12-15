@@ -3,3 +3,4 @@
 
 (enable-console-print!)
 (log/debug!)
+(log/info "DEVELOPMENT LOADED")
