@@ -5,18 +5,77 @@
             [goog.events]
             [reagent.core :as reagent]))
 
-(defonce state (reagent/atom {}))
+(defonce state (reagent/atom {:nests {}
+                              :cells {}
+                              :logs  []}))
+(defonce cells (reagent/cursor state [:cells]))
+(defonce logs (reagent/cursor state [:logs]))
+(defonce nests (reagent/cursor state [:nests]))
+
+(defonce colors (reagent/atom (cycle ["red"
+                                      "orange"
+                                      "yellow"
+                                      "green"
+                                      "blue"
+                                      "indigo"])))
 
 (def transit-reader (transit/reader :json))
+
+(defn nest? [thing] (= :nest (:type thing)))
+(defn food? [thing] (= :food (:type thing)))
+(defn ant? [thing] (= :ant (:type thing)))
+
+(defn color-for [thing]
+  (case (:type thing)
+    :nest "black"
+    :food "brown"
+    (when-let [nest (get @nests (:nest thing))]
+      (:color nest))))
+
+(defn cell [x y]
+  (let [cell-atom (reagent/cursor cells [x y])
+        dist (Math/sqrt (+ (* x x) (* y y)))]
+    (fn [& _]
+      (let [color (color-for @cell-atom)]
+        [:div.cell {:class (if (> dist 25.5) "perimeter" "")
+                    :style (when color {:background-color color})}])
+      )))
+
+(defn log-panel []
+  [:div.logs
+   (for [[key log] @logs]
+     [:span.log {:key key} log])])
+
+(defn nest [nest-atom]
+  [:div.nest
+   [:div.swatch {:style {:background-color (:color @nest-atom)}}]
+   [:span (:team @nest-atom)]])
+
+(defn nests-panel []
+  ;(log/debug "@nests: " (pr-str @nests))
+  ;(log/info "(sort (keys @nests)): " (sort (keys @nests)))
+  [:div.nests
+   (for [anest (sort-by :team (vals @nests))]
+     (with-meta
+       [nest (reagent/cursor nests [(:id anest)])]
+       {:key (:id anest)}))])
+
+(def visible-coords (for [y (range -25 26) x (range -25 26)] (list x y)))
 
 (defn arena []
   [:div.arena
    [:div.top-panel
     [:h1 "Ant Sparring"]]
    [:div.middle
-    [:div.left-panel]
-    [:div.world]
-    [:div.right-panel]]
+    [:div.left-panel
+     [:h2 "Nests"]
+     [nests-panel]]
+    [:div.world
+     (for [[x y] visible-coords]
+       (with-meta [cell x y] {:key (str x ", " y)}))]
+    [:div.right-panel
+     [:h2 "Log"]
+     [log-panel]]]
    [:div.bottom-panel]]
   )
 
@@ -26,4 +85,43 @@
         body (.-body js/document)]
     (reagent/render-component [arena payload] body)
     (log/info "connecting!")
-    (remote/connect!)))
+    (remote/connect!))
+  ;(swap! logs conj [123 "This is a test"])
+  )
+
+(defn add-new-logs [old new]
+  (concat (reverse (map #(list (.random js/Math) %) new)) old))
+
+(defn- assign-color [nest]
+  (let [color (first @colors)]
+    (swap! colors rest)
+    (assoc nest :color color)))
+
+(defn compile-nests [nests world]
+  (let [things (vals world)
+        all (filter #(= :nest (:type %)) things)
+        new (filter #(not (contains? nests (:id %))) all)
+        new (map assign-color new)]
+    (reduce #(assoc %1 (:id %2) %2) nests new)))
+
+(defn prioritize-thing [old new]
+  (cond
+    (nest? old) old
+    (food? old) old
+    :else new))
+
+(defn update-cells [cells world]
+  (reduce
+    (fn [cells thing]
+      (update-in cells (:location thing) prioritize-thing thing))
+    cells
+    (vals world)))
+
+(defmethod remote/push-event-handler :ants/update [[_ [world new-logs]]]
+  ;(log/info "world new-logs: " world new-logs)
+  (swap! logs add-new-logs new-logs)
+  (swap! nests compile-nests world)
+  (swap! cells update-cells world)
+  ;(prn "@cells: " @cells)
+  ;(reset! cells (index-cells world))
+  )

@@ -53,7 +53,7 @@
 (defmulti event-msg-handler :id)                            ; Dispatch on event-id
 
 (defn event-msg-handler* [{:as ev-msg :keys [id ?data event]}]
-  (log/debug "incomming event: " event)
+  ;(log/debug "incomming event: " event)
   (event-msg-handler ev-msg))
 
 (defmethod event-msg-handler :default [{:as ev-msg :keys [event]}]
@@ -67,9 +67,14 @@
         (action)))
     nil))
 
-(defmethod event-msg-handler :chsk/recv [{:as ev-msg :keys [?data]}]
-  (log/debug "Push event from server: " ?data))
+(defmulti push-event-handler first)
+(defmethod push-event-handler :default [[key body]]
+  (log/debug "Push event" key body))
 
+(defmethod event-msg-handler :chsk/recv [{:as ev-msg :keys [?data]}]
+  ;[:ants/update [{} ()]]
+  ;(log/debug "Push event from server: " ?data)
+  (push-event-handler ?data))
 
 (defmethod event-msg-handler :chsk/handshake [{:as ev-msg :keys [?data]}]
   (log/debug "handshake: " ?data))
