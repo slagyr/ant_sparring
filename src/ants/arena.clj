@@ -6,7 +6,6 @@
             [hiccup.core :as hiccup]
             [hiccup.element :as elem]
             [hiccup.page :as page]
-            [joodo.env :as env]
             [joodo.middleware.asset-fingerprint :refer [add-fingerprint]]
             [joodo.middleware.request :refer [*request*]]
             [ring.util.response :as response]
@@ -31,7 +30,7 @@
           [:meta {:name "viewport" :content "width=device-width, initial-scale=1.0"}]
           [:title "Ants"]
           (page/include-css (add-fingerprint "/stylesheets/ants.css"))
-          (if (env/development?)
+          (if (app/dev?)
             (list
               (page/include-js "/cljs/react-with-addons.inc.js")
               (page/include-js "/cljs/goog/base.js")
@@ -40,7 +39,7 @@
           (elem/javascript-tag (str "goog.require('ants.arena');"))]
          [:body (str "<script type=\"text/javascript\">"
                      "//<![CDATA[\n"
-                     (when (env/development?)
+                     (when (app/dev?)
                        "goog.require('ants.development');\n")
                      "ants.arena.init(" (pr-str (->transit {})) ");\n"
                      "//]]></script>")]]))))

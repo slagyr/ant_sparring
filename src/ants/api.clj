@@ -6,7 +6,6 @@
             [ants.util :as util]
             [compojure.core :refer [defroutes GET]]
             [compojure.route :refer [not-found]]
-            [joodo.env :as env]
             [joodo.middleware.request :refer [wrap-bind-request *request*]]
             [org.httpkit.server :refer [run-server]]
             [ring.middleware.anti-forgery :refer [wrap-anti-forgery]]
@@ -58,13 +57,13 @@
   (GET "/:id/stat" {{id :id} :params} (marshal 200 {:response "ok" :stat (engine/stat @app/world id)})))
 
 (defn wrap-dev-maybe [handler]
-  (if (env/development?)
+  (if (app/dev?)
     (let [wrapper (util/resolve-var 'ants.refresh/wrap-development)]
       (wrapper handler))
     handler))
 
 (defn refreshable [handler-sym]
-  (if (env/development?)
+  (if (app/dev?)
     (fn [request] (@(util/resolve-var handler-sym) request))
     (util/resolve-var handler-sym)))
 

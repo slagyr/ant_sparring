@@ -20,7 +20,7 @@
 (defn start []
   (log/with-log-level
     :info
-    (log/info "Airworthy Environment: " (env/env :joodo-env))
+    (log/info "Ant Environment: " @app/env)
     (log/info "before starting app/app: " (keys @(app/app)))
     (swap! (app/app) start-services)
     (log/info "after startin app/app: " (keys @(app/app)))))

@@ -80,7 +80,7 @@
   (remote/call! :arena/add-food {:location (rand-nth visible-coords)}))
 
 (defn add-new-logs [old new]
-  (concat (reverse (map #(list (.random js/Math) %) new)) old))
+  (take 1000 (concat (reverse (map #(list (.random js/Math) %) new)) old)))
 
 (defn reset-world [e]
   (swap! logs add-new-logs ["Resetting World!"])

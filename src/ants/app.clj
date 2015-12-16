@@ -6,7 +6,7 @@
   (:import (clojure.lang IDeref)))
 
 (when-not (bound? (resolve 'app))
-  (def app (atom {})))
+  (def app (atom {:env "development"})))
 
 (in-ns 'ants.app)
 ; END HACK ----------------------
@@ -27,3 +27,6 @@
           (throw (Exception. (str "Unresolved app component: " key))))))))
 
 (def world (resolution :world))
+(def env (resolution :env))
+
+(defn dev? [] (= "development" @env))
