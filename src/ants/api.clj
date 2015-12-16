@@ -28,7 +28,6 @@
   (try
     (let [id (cmd)]
       (locking @app/world (.wait @app/world (* 2 engine/TICK-DURATION)))
-      (prn "engine/*world*: " (.stuff @app/world))
       (marshal 200 {:response "ok" :stat (engine/stat @app/world id)}))
     (catch Exception e
       (log/error e)
@@ -47,11 +46,11 @@
 (defroutes handler
   (GET "/" [] (text "Welcome to Ant Sparring!" "\n\n" DOC))
   (GET "/arena" [] (arena/html-response))
-  (GET "/_admin_/start" [] (do (engine/start @app/world) (text "The world has started")))
-  (GET "/_admin_/stop" [] (do (engine/stop @app/world) (text "The world has stopped")))
-  (GET "/_admin_/feed" [] (marshal 200 (engine/get-feed @app/world)))
-  (GET "/_admin_/place-food/:x/:y" {{x :x y :y} :params} (marshal 200 (engine/place-food @app/world [(Integer/parseInt x) (Integer/parseInt y)])))
-  (GET "/_admin_/remove-food/:x/:y" {{x :x y :y} :params} (marshal 200 (engine/remove-food @app/world [(Integer/parseInt x) (Integer/parseInt y)])))
+  ;(GET "/_admin_/start" [] (do (engine/start @app/world) (text "The world has started")))
+  ;(GET "/_admin_/stop" [] (do (engine/stop @app/world) (text "The world has stopped")))
+  ;(GET "/_admin_/feed" [] (marshal 200 (engine/get-feed @app/world)))
+  ;(GET "/_admin_/place-food/:x/:y" {{x :x y :y} :params} (marshal 200 (engine/place-food @app/world [(Integer/parseInt x) (Integer/parseInt y)])))
+  ;(GET "/_admin_/remove-food/:x/:y" {{x :x y :y} :params} (marshal 200 (engine/remove-food @app/world [(Integer/parseInt x) (Integer/parseInt y)])))
   (GET "/join/:name" {{name :name} :params} (do-cmd #(engine/join @app/world name)))
   (GET "/:id/look" {{id :id} :params} (do-cmd #(engine/look @app/world id)))
   (GET "/:id/go/:direction" {{id :id dir :direction} :params} (do-cmd #(engine/go @app/world id dir)))

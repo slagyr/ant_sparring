@@ -1,6 +1,7 @@
 (ns ants.engine-spec
   (:require [speclj.core :refer :all]
-            [ants.engine :refer :all]))
+            [ants.engine :refer :all]
+            [ants.engine :as engine]))
 
 (describe "Ants Engine Core"
 
@@ -70,7 +71,20 @@
         (should= nest-id (:nest ant))
         (should= [0 0] (:location ant)))))
 
-  (it "spawning a new ant"
+  (it "spawns 2 ants"
+    (let [nest-id (join @world "Phil")]
+      (tick @world)
+      (spawn @world nest-id)
+      (tick @world)
+      (spawn @world nest-id)
+      (tick @world)
+      (let [nest (get @stuff nest-id)
+            ants (filter ant? (vals @stuff))]
+        (should= 2 (count ants))
+        (should= #{1 2} (set (map :n ants)))
+        (should= 2 (:ants nest)))))
+
+  (it "spawning ant without food"
     (let [nest-id (join @world "Phil")]
       (tick @world)
       (doseq [i (range 5)] (spawn @world nest-id) (tick @world))

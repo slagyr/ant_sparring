@@ -107,10 +107,15 @@
 
 ; COMMAND EXECUTION -----------------------------------------------------------------
 
+(defn food? [thing] (= :food (:type thing)))
+(defn nest? [thing] (= :nest (:type thing)))
+(defn ant? [thing] (= :ant (:type thing)))
+
 (def nest-template
   {:type     :nest
    :location [0 0]
    :food     5
+   :ants     0
    :team     "Unknown"
    :id       "Unknown"})
 
@@ -129,13 +134,14 @@
 
 (defn- do-spawn [stuff {:keys [nest id]}]
   (let [nest-val (get @stuff nest)
-        team-ants (filter #(and (= :ant (:type %)) (= (:team nest) (:team %))) (vals @stuff))]
+        nest-ants (inc (:ants nest-val))
+        nest-food (dec (:food nest-val))]
     (alter stuff assoc
            id (assoc ant-template :team (:team nest-val)
                                   :id id
-                                  :n (inc (count team-ants))
+                                  :n nest-ants
                                   :nest nest)
-           nest (update-in nest-val [:food] dec))
+           nest (assoc nest-val :food nest-food :ants nest-ants))
     (format "Team %s has spawned a new ant." (:team nest-val))))
 
 (defn- new-location [[x y] dir]
@@ -148,10 +154,6 @@
     (= "sw" dir) [(dec x) (inc y)]
     (= "w" dir) [(dec x) y]
     (= "nw" dir) [(dec x) (dec y)]))
-
-
-(defn food? [thing] (= :food (:type thing)))
-(defn nest? [thing] (= :nest (:type thing)))
 
 (defn- food-at? [stuff loc]
   (some

@@ -9,7 +9,8 @@
             [joodo.env :as env]
             [joodo.middleware.asset-fingerprint :refer [add-fingerprint]]
             [joodo.middleware.request :refer [*request*]]
-            [ring.util.response :as response])
+            [ring.util.response :as response]
+            [ants.log :as log])
   (:import (java.io ByteArrayOutputStream)))
 
 (defn ->transit [data]
@@ -44,6 +45,15 @@
                      "ants.arena.init(" (pr-str (->transit {})) ");\n"
                      "//]]></script>")]]))))
 
+(defn world-updated [stuff last-logs]
+  (try
+    ;(log/info "stuff last-logs: " stuff (pr-str last-logs))
+    ;(prn "@connected-uids: " @connected-uids)
+    (doseq [uid (:any @@remote/connected-uids)]
+      ;(prn "uid: " uid)
+      (@remote/send-fn uid [:ants/update [stuff last-logs]]))
+    (catch Exception e (log/error e))))
+
 (defn ^:remote add-food [{:keys [location]}]
   (remote/success
     (engine/place-food @app/world location)))
@@ -51,3 +61,10 @@
 (defn ^:remote clear-food [_]
   (remote/success
     (engine/remove-all-food @app/world)))
+
+(defn ^:remote reset-world [_]
+  (swap! (app/app) engine/stop)
+  (let [world (engine/new-world world-updated)]
+    (swap! (app/app) assoc :world world)
+    (swap! (app/app) engine/start)
+    (remote/success {})))

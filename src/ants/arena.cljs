@@ -4,20 +4,31 @@
             [cognitect.transit :as transit]
             [goog.events]
             [reagent.core :as reagent]))
-
-(defonce state (reagent/atom {:nests {}
-                              :cells {}
-                              :logs  []}))
+(def start-state {:nests {}
+                  :cells {}
+                  :logs  []})
+(defonce state (reagent/atom start-state))
 (defonce cells (reagent/cursor state [:cells]))
 (defonce logs (reagent/cursor state [:logs]))
 (defonce nests (reagent/cursor state [:nests]))
 
-(defonce colors (reagent/atom (cycle ["red"
-                                      "orange"
-                                      "yellow"
-                                      "green"
-                                      "blue"
-                                      "indigo"])))
+(defonce colors (reagent/atom (cycle ["FireBrick"
+                                      "Green"
+                                      "Gold"
+                                      "DodgerBlue"
+                                      "LightPink"
+                                      "Chocolate"
+                                      "Magenta"
+                                      "Honeydew"
+                                      "Salmon"
+                                      "Lime"
+                                      "DarkKhaki"
+                                      "Cyan"
+                                      "MediumVioletRed"
+                                      "Goldenrod"
+                                      "DarkMagenta"
+                                      "MistyRose"
+                                      ])))
 
 (def transit-reader (transit/reader :json))
 
@@ -28,7 +39,7 @@
 (defn color-for [thing]
   (case (:type thing)
     :nest "black"
-    :food "brown"
+    :food "grey"
     (when-let [nest (get @nests (:nest thing))]
       (:color nest))))
 
@@ -49,12 +60,15 @@
 (defn nest [nest-atom]
   [:div.nest
    [:div.swatch {:style {:background-color (:color @nest-atom)}}]
-   [:span (:team @nest-atom)]])
+   [:span (:team @nest-atom)]
+   [:span.score (str (:ants @nest-atom) "/" (:food @nest-atom))]])
 
 (defn nests-panel []
-  ;(log/debug "@nests: " (pr-str @nests))
-  ;(log/info "(sort (keys @nests)): " (sort (keys @nests)))
   [:div.nests
+   [:div.nest
+    [:div.swatch {:style {:background-color (:color "transparent")}}]
+    [:span [:i "Team Name"]]
+    [:span.score [:i "Ants/Food"]]]
    (for [anest (sort-by :team (vals @nests))]
      (with-meta
        [nest (reagent/cursor nests [(:id anest)])]
@@ -64,6 +78,16 @@
 
 (defn add-food [e]
   (remote/call! :arena/add-food {:location (rand-nth visible-coords)}))
+
+(defn add-new-logs [old new]
+  (concat (reverse (map #(list (.random js/Math) %) new)) old))
+
+(defn reset-world [e]
+  (swap! logs add-new-logs ["Resetting World!"])
+  (remote/call! :arena/reset-world {}
+                :on-success (fn [_]
+                              (reset! state start-state)
+                              (swap! logs add-new-logs ["World reset!"]))))
 
 (defn arena []
   [:div.arena
@@ -81,11 +105,12 @@
      [log-panel]]]
    [:div.bottom-panel
     [:button {:on-click add-food} "Add Food"]
-    [:button {:on-click #(remote/call! :arena/clear-food {})} "Clear Food"]]]
+    [:button {:on-click #(remote/call! :arena/clear-food {})} "Clear Food"]
+    [:button {:on-click reset-world} "Reset World"]]]
   )
 
 (defn ^:export init [payload-src]
-  (log/all!)
+  (log/off!)
   (let [payload (transit/read transit-reader payload-src)
         body (.-body js/document)]
     (reagent/render-component [arena payload] body)
@@ -94,20 +119,21 @@
   ;(swap! logs conj [123 "This is a test"])
   )
 
-(defn add-new-logs [old new]
-  (concat (reverse (map #(list (.random js/Math) %) new)) old))
-
 (defn- assign-color [nest]
-  (let [color (first @colors)]
-    (swap! colors rest)
-    (assoc nest :color color)))
+  (if (:color nest)
+    nest
+    (let [color (first @colors)]
+      (swap! colors rest)
+      (assoc nest :color color))))
 
 (defn compile-nests [nests world]
   (let [things (vals world)
-        all (filter #(= :nest (:type %)) things)
-        new (filter #(not (contains? nests (:id %))) all)
-        new (map assign-color new)]
-    (reduce #(assoc %1 (:id %2) %2) nests new)))
+        all (filter #(= :nest (:type %)) things)]
+    (reduce (fn [nests nest]
+              (if-let [existing (get nests (:id nest))]
+                (assoc nests (:id nest) (merge existing nest))
+                (assoc nests (:id nest) (assign-color nest))))
+            nests all)))
 
 (defn prioritize-thing [old new]
   (cond
@@ -129,6 +155,4 @@
   (swap! logs add-new-logs new-logs)
   (swap! nests compile-nests world)
   (swap! cells update-cells world)
-  (prn "@cells: " @cells)
-  ;(reset! cells (index-cells world))
   )
