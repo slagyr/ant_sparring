@@ -76,7 +76,7 @@
 
 (def app
   (-> web-routes
-      ;wrap-dev-maybe
+      wrap-dev-maybe
       wrap-bind-request
       wrap-anti-forgery
       wrap-keyword-params

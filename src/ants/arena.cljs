@@ -33,7 +33,7 @@
       (:color nest))))
 
 (defn cell [x y]
-  (let [cell-atom (reagent/cursor cells [x y])
+  (let [cell-atom (reagent/cursor cells [[x y]])
         dist (Math/sqrt (+ (* x x) (* y y)))]
     (fn [& _]
       (let [color (color-for @cell-atom)]
@@ -62,6 +62,9 @@
 
 (def visible-coords (for [y (range -25 26) x (range -25 26)] (list x y)))
 
+(defn add-food [e]
+  (remote/call! :arena/add-food {:location (rand-nth visible-coords)}))
+
 (defn arena []
   [:div.arena
    [:div.top-panel
@@ -76,7 +79,9 @@
     [:div.right-panel
      [:h2 "Log"]
      [log-panel]]]
-   [:div.bottom-panel]]
+   [:div.bottom-panel
+    [:button {:on-click add-food} "Add Food"]
+    [:button {:on-click #(remote/call! :arena/clear-food {})} "Clear Food"]]]
   )
 
 (defn ^:export init [payload-src]
@@ -106,22 +111,24 @@
 
 (defn prioritize-thing [old new]
   (cond
+    (nil? old) new
     (nest? old) old
     (food? old) old
     :else new))
 
 (defn update-cells [cells world]
   (reduce
-    (fn [cells thing]
-      (update-in cells (:location thing) prioritize-thing thing))
-    cells
-    (vals world)))
+    (fn [result thing]
+      (let [loc (:location thing)
+            old (get result loc)]
+        (assoc result loc (prioritize-thing old thing))))
+    {} (vals world)))
 
 (defmethod remote/push-event-handler :ants/update [[_ [world new-logs]]]
   ;(log/info "world new-logs: " world new-logs)
   (swap! logs add-new-logs new-logs)
   (swap! nests compile-nests world)
   (swap! cells update-cells world)
-  ;(prn "@cells: " @cells)
+  (prn "@cells: " @cells)
   ;(reset! cells (index-cells world))
   )

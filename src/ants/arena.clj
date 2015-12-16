@@ -1,5 +1,8 @@
 (ns ants.arena
-  (:require [cognitect.transit :as transit]
+  (:require [ants.app :as app]
+            [ants.engine :as engine]
+            [ants.remote :as remote]
+            [cognitect.transit :as transit]
             [hiccup.core :as hiccup]
             [hiccup.element :as elem]
             [hiccup.page :as page]
@@ -40,3 +43,11 @@
                        "goog.require('ants.development');\n")
                      "ants.arena.init(" (pr-str (->transit {})) ");\n"
                      "//]]></script>")]]))))
+
+(defn ^:remote add-food [{:keys [location]}]
+  (remote/success
+    (engine/place-food @app/world location)))
+
+(defn ^:remote clear-food [_]
+  (remote/success
+    (engine/remove-all-food @app/world)))

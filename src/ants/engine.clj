@@ -10,16 +10,12 @@
 (defn new-world
   ([] (new-world nil))
   ([observer]
-   (log/report "NEW WORLD!!!!")
    (World.
      (ref {})
      (ref {})
      (ref [])
      (atom nil)
      observer)))
-
-;(def ^:dynamic *world* (new-world))
-
 
 (def DIRECTIONS #{"n" "ne" "e" "se" "s" "sw" "w" "nw"})
 
@@ -96,6 +92,12 @@
         (:id food))
       (throw (Exception. (str "No food found at " location))))))
 
+(defn remove-all-food [world]
+  (dosync
+    (let [id (gen-id)]
+      (alter (.commands world) assoc id {:command :remove-all-food :id id :timestamp (System/nanoTime)})
+      id)))
+
 (defn get-feed [world]
   (dosync
     (let [response {:stuff @(.stuff world) :log @(.log world)}]
@@ -147,14 +149,18 @@
     (= "w" dir) [(dec x) y]
     (= "nw" dir) [(dec x) (dec y)]))
 
+
+(defn food? [thing] (= :food (:type thing)))
+(defn nest? [thing] (= :nest (:type thing)))
+
 (defn- food-at? [stuff loc]
   (some
-    #(and (= :food (:type %)) (= loc (:location %)))
+    #(and (food? %) (= loc (:location %)))
     (vals stuff)))
 
 (defn- nest-at? [stuff loc]
   (some
-    #(and (= :nest (:type %)) (= loc (:location %)))
+    #(and (nest? %) (= loc (:location %)))
     (vals stuff)))
 
 (defn- award-points [ant points]
@@ -201,18 +207,25 @@
     (alter stuff dissoc food-id)
     (format "The food at (%s, %s) has disappeared" x y)))
 
+(defn- do-remove-all-food [stuff command]
+  (let [foods (filter food? (vals @stuff))
+        food-ids (map :id foods)]
+    (alter stuff (fn [stuff] (reduce #(dissoc %1 %2) stuff food-ids)))
+    (format "All food (%s) has been removed" (count foods))))
+
 (defn- do-look [stuff command]
   (let [ant (get @stuff (:id command))]
     (format "%s-%d looks around" (:team ant) (:n ant))))
 
 (def command-map
   {
-   :join        do-join
-   :go          do-go
-   :place-food  do-place-food
-   :remove-food do-remove-food
-   :look        do-look
-   :spawn       do-spawn
+   :join            do-join
+   :go              do-go
+   :place-food      do-place-food
+   :remove-food     do-remove-food
+   :remove-all-food do-remove-all-food
+   :look            do-look
+   :spawn           do-spawn
    })
 
 (defn execute-command [stuff command]
@@ -234,10 +247,8 @@
       results)))
 
 (defn tick [world]
-  (prn "(.stuff world): " (.stuff world))
   (try
     (let [results (exec-commands world)]
-      (log/report "results: " (pr-str results))
       (locking world (.notifyAll world))
       (when-let [observer (.observer world)]
         (observer @(.stuff world) results)))

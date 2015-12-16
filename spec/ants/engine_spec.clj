@@ -14,7 +14,7 @@
     (should= {} @commands))
 
   (it "can join the world"
-    (let [result (join @world "Joe") ;"client")
+    (let [result (join @world "Joe")                        ;"client")
           command (get @commands result)]
       (should-not= nil result)
       (should= 1 (count @commands))
@@ -241,6 +241,18 @@
             food (get @stuff food-id)]
         (should= nil food)
         (should= "The food at (5, 5) has disappeared" (last @log))))
+
+    (it "can be removed"
+      (let [id (place-food @world [5 5])
+            _ (tick @world)
+            remove-id (remove-all-food @world)
+            command (get @commands remove-id)]
+        (should-not= nil command)
+        (should= :remove-all-food (:command command))
+        (should-not= nil (:timestamp command))
+        (tick @world)
+        (tick @world)
+        (should= [] (filter #(= :food (:type %)) (vals @stuff)))))
     )
 
   (context "observer"
@@ -251,7 +263,7 @@
             world (new-world observer)]
         (tick world)
         (Thread/sleep 100)
-        (should= [{}[]] @state)))
+        (should= [{} []] @state)))
     )
   )
 

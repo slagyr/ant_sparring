@@ -61,7 +61,6 @@
     (log/debug "Handler: " handler)
     (binding [*request* ring-req]
       (let [payload (merge ?data (dissoc ev-msg :?data))
-            ;payload (assoc payload :_user (auth/current-user))
             result (handler payload)]
         (log/debug "result: " result)
         (when ?reply-fn
@@ -92,6 +91,9 @@
   (routes
     (GET "/chsk" req (@get-handler req))
     (POST "/chsk" req (@post-handler req))))
+
+(defn success [payload]
+  {:status :ok :data payload})
 
 (defn world-updated [stuff last-logs]
   (try

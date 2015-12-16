@@ -5,12 +5,14 @@
             [ants.init :as init]
             [ants.log :as log]
             [ants.remote :as remote]
-            [org.httpkit.server :refer [run-server]]))
+            [org.httpkit.server :refer [run-server]]
+            [joodo.env :as env]
+            [ants.util :as util]))
 
 (defn -main []
-  #_(when (env/development?)
-      (let [init-refresh (util/resolve-var 'ants.refresh/init)]
-        (init-refresh 'ants.init/stop 'ants.init/start)))
+  (when (env/development?)
+    (let [init-refresh (util/resolve-var 'ants.refresh/init)]
+      (init-refresh 'ants.init/stop 'ants.init/start)))
   (let [world (engine/new-world remote/world-updated)]
     (swap! (app/app) assoc :world world))
   (init/start)
