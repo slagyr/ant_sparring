@@ -61,7 +61,7 @@
           id (gen-id)]
       (when (< (:food nest-val) 1)
         (throw (Exception. "You need food to spawn an ant.")))
-      (alter (.commands world) assoc id {:command :spawn :nest nest :id id :timestamp (System/nanoTime)})
+      (alter (.commands world) assoc nest {:command :spawn :nest nest :id id :timestamp (System/nanoTime)})
       id)))
 
 (defn go [world ant direction]

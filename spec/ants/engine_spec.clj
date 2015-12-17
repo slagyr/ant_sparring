@@ -84,6 +84,13 @@
         (should= #{1 2} (set (map :n ants)))
         (should= 2 (:ants nest)))))
 
+  (it "can't spawn multiple ants in same tick"
+    (let [nest-id (join @world "Phil")]
+      (tick @world)
+      (spawn @world nest-id)
+      (should-throw Exception "You're allowed only 1 command per tick"
+                    (spawn @world nest-id))))
+
   (it "spawning ant without food"
     (let [nest-id (join @world "Phil")]
       (tick @world)
