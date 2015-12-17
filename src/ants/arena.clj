@@ -67,3 +67,9 @@
     (swap! (app/app) assoc :world world)
     (swap! (app/app) engine/start)
     (remote/success {})))
+
+(defn ^:remote toggle-food [{:keys [location]}]
+  (if (engine/food-at? @(.stuff @app/world) location)
+    (engine/remove-food @app/world location)
+    (engine/place-food @app/world location))
+  (remote/success "Food toggled"))

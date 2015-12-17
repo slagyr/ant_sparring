@@ -43,13 +43,17 @@
     (when-let [nest (get @nests (:nest thing))]
       (:color nest))))
 
+(defn toggle-food [location]
+    (remote/call! :arena/toggle-food {:location location}))
+
 (defn cell [x y]
   (let [cell-atom (reagent/cursor cells [[x y]])
         dist (Math/sqrt (+ (* x x) (* y y)))]
     (fn [& _]
       (let [color (color-for @cell-atom)]
         [:div.cell {:class (if (> dist 25.5) "perimeter" "")
-                    :style (when color {:background-color color})}])
+                    :style (when color {:background-color color})
+                    :on-click #(toggle-food [x y])}])
       )))
 
 (defn log-panel []

@@ -18,4 +18,4 @@
   (init/start)
   (let [port (if-let [port-str (System/getenv "PORT")] (Integer/parseInt port-str) 8888)]
     (log/info (str "Starting server on port " port))
-    (run-server @(util/resolve-var 'ants.api/app) {:port port})))
+    (run-server @(util/resolve-var 'ants.api/app) {:port port :thread 500})))

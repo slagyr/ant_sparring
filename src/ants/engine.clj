@@ -155,7 +155,7 @@
     (= "w" dir) [(dec x) y]
     (= "nw" dir) [(dec x) (dec y)]))
 
-(defn- food-at? [stuff loc]
+(defn food-at? [stuff loc]
   (some
     #(and (food? %) (= loc (:location %)))
     (vals stuff)))
