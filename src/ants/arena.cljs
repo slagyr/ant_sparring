@@ -19,7 +19,7 @@
                                       "LightPink"
                                       "Chocolate"
                                       "Magenta"
-                                      "Honeydew"
+                                      "BurlyWood"
                                       "Salmon"
                                       "Lime"
                                       "DarkKhaki"
