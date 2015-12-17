@@ -30,7 +30,7 @@
           [:meta {:name "viewport" :content "width=device-width, initial-scale=1.0"}]
           [:title "Ants"]
           (page/include-css (add-fingerprint "/stylesheets/ants.css"))
-          (if (app/dev?)
+          (if true ;(app/dev?)
             (list
               (page/include-js "/cljs/react-with-addons.inc.js")
               (page/include-js "/cljs/goog/base.js")

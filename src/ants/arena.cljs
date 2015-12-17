@@ -4,6 +4,7 @@
             [cognitect.transit :as transit]
             [goog.events]
             [reagent.core :as reagent]))
+
 (def start-state {:nests {}
                   :cells {}
                   :logs  []})
@@ -80,8 +81,17 @@
 
 (def visible-coords (for [y (range -25 26) x (range -25 26)] (list x y)))
 
-(defn add-food [e]
-  (remote/call! :arena/add-food {:location (rand-nth visible-coords)}))
+(defn random-food-location []
+  (->> (repeatedly #(rand-nth visible-coords))
+       (filter (fn [[x y]]
+                 (and (<= 4 (Math/abs x))
+                      (<= 4 (Math/abs y)))))
+       first))
+
+(defn add-food [n]
+  (doseq [_ (range n)]
+    (remote/call! :arena/add-food
+                  {:location (random-food-location)})))
 
 (defn add-new-logs [old new]
   (take 1000 (concat (reverse (map #(list (.random js/Math) %) new)) old)))
@@ -108,7 +118,8 @@
      [:h2 "Log"]
      [log-panel]]]
    [:div.bottom-panel
-    [:button {:on-click add-food} "Add Food"]
+    [:button {:on-click #(add-food 1)} "Add 1 Food"]
+    [:button {:on-click #(add-food 25)} "Add 25 Food"]
     [:button {:on-click #(remote/call! :arena/clear-food {})} "Clear Food"]
     [:button {:on-click reset-world} "Reset World"]]]
   )
