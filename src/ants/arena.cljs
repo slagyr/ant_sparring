@@ -22,12 +22,12 @@
                                       "BurlyWood"
                                       "Salmon"
                                       "Lime"
-                                      "DarkKhaki"
                                       "Cyan"
                                       "MediumVioletRed"
                                       "Goldenrod"
                                       "DarkMagenta"
                                       "MistyRose"
+                                      "DarkKhaki"
                                       ])))
 
 (def transit-reader (transit/reader :json))

@@ -13,7 +13,8 @@
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             [ring.middleware.params :refer [wrap-params]]
             [ring.middleware.resource :refer [wrap-resource]]
-            [ring.middleware.session :refer [wrap-session]]))
+            [ring.middleware.session :refer [wrap-session]]
+            [ring.util.response :as response]))
 
 (defn- text [& message]
   {:status 200 :content-type "text/plain" :body (apply str message)})
@@ -44,7 +45,9 @@
 
 (defroutes handler
   (GET "/" [] (text "Welcome to Ant Sparring!" "\n\n" DOC))
-  (GET "/arena" [] (arena/html-response))
+  (GET "/arena" [] (if (or (app/dev?) (= "localhost" (:server-name *request*)))
+                     (arena/html-response)
+                     (response/not-found "No cheating!")))
   ;(GET "/_admin_/start" [] (do (engine/start @app/world) (text "The world has started")))
   ;(GET "/_admin_/stop" [] (do (engine/stop @app/world) (text "The world has stopped")))
   ;(GET "/_admin_/feed" [] (marshal 200 (engine/get-feed @app/world)))
